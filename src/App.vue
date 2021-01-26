@@ -1,9 +1,6 @@
 <template>
 	<div class="app">
-		<!-- <visual-editor /> -->
-		<test-use-model v-model="val" />
-		<test-use-model v-model="val" />
-		val:{{ val }}
+		<visual-editor v-model="dataJson" />
 	</div>
 </template>
 
@@ -16,12 +13,26 @@
 		name: "App",
 		data() {
 			return {
-				val: "",
+				dataJson: {
+					container: {
+						height: 300,
+						width: 400,
+					},
+					blocks: [
+						{
+							top: 100,
+							left: 100,
+						},
+						{
+							top: 200,
+							left: 200,
+						},
+					],
+				},
 			};
 		},
 		components: {
-			// VisualEditor,
-			TestUseModel,
+			VisualEditor,
 		},
 	});
 </script>
