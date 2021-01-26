@@ -1,6 +1,6 @@
 <template>
 	<div class="app">
-		<visual-editor v-model="dataJson" />
+		<visual-editor v-model="dataJson" :config="VisualConfig" />
 	</div>
 </template>
 
@@ -8,11 +8,12 @@
 	import { defineComponent } from "vue";
 	import { VisualEditor } from "@/packages/visual-editor";
 	import { TestUseModel } from "@/packages/utils/useModel";
-
+	import {VisualConfig} from '@/visual.config'
 	export default defineComponent({
 		name: "App",
 		data() {
 			return {
+				VisualConfig,
 				dataJson: {
 					container: {
 						height: 300,
