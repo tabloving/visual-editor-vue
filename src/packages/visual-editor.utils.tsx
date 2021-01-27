@@ -1,7 +1,8 @@
 export interface VisualEditorBlockData {
-  componentKey: string,
+  componentKey: string,     // 映射 VisualEditorConfig中componentMap的component对象
   top: number,
   left: number,
+  adjustPosition: boolean
 }
 
 export interface VisualEditorModelValue {
