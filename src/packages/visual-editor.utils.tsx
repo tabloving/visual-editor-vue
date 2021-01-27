@@ -1,4 +1,5 @@
 export interface VisualEditorBlockData {
+  componentKey: string,
   top: number,
   left: number,
 }
