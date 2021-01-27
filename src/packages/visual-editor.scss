@@ -117,6 +117,21 @@ $primary: #409eff;
 
         .visual-editor-block {
           position: absolute;
+
+          &:after{
+            position: absolute;
+            $space: 3px;
+            top: -$space;
+            left: -$space;
+            right: -$space;
+            bottom: -$space;
+            content: '';
+          }
+          &.visual-editor-block-focus{
+            &:after{
+              border:1px dashed $primary
+            }
+          }
         }
       }
     }

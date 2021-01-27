@@ -2,7 +2,8 @@ export interface VisualEditorBlockData {
   componentKey: string,     // 映射 VisualEditorConfig中componentMap的component对象
   top: number,
   left: number,
-  adjustPosition: boolean
+  adjustPosition: boolean,
+  focus: boolean
 }
 
 export interface VisualEditorModelValue {
@@ -35,5 +36,21 @@ export function createVisualEditorConfig() {
   }
 }
 
-
+export function createNewBlock({
+  component,
+  left,
+  top
+}: {
+  component: VisualEditorComponent,
+  top: number,
+  left: number
+}): VisualEditorBlockData {
+  return {
+    top,
+    left,
+    componentKey: component!.key,
+    adjustPosition: true,
+    focus: false
+  }
+}
 export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>

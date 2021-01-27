@@ -14,16 +14,23 @@ export const VisualEditorBlock = defineComponent({
   },
   setup(props) {
     const el = ref({} as HTMLDivElement);
+    const classes = computed(() => [
+      'visual-editor-block',
+      {
+        'visual-editor-block-focus': props.block.focus
+      }
+    ])
+
     const styles = computed(() => ({
       top: `${props.block.top}px`,
       left: `${props.block.left}px`,
     }))
 
-    onMounted(()=>{
+    onMounted(() => {
       /* 添加组件的时候，自动调整位置，居中放置 */
       const block = props.block;
-      if(block.adjustPosition){
-        const {offsetWidth,offsetHeight} = el.value;
+      if (block.adjustPosition) {
+        const { offsetWidth, offsetHeight } = el.value;
         block.left = block.left - offsetWidth / 2;
         block.top = block.top - offsetHeight / 2;
         block.adjustPosition = false
@@ -34,7 +41,7 @@ export const VisualEditorBlock = defineComponent({
       const component = props.config.componentMap[props.block.componentKey];
       const Render = component.render()
       return (
-        <div class="visual-editor-block" style={styles.value} ref={el}>
+        <div class={classes.value} style={styles.value} ref={el}>
           {Render}
         </div>
       )

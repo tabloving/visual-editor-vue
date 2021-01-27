@@ -23,7 +23,8 @@
 						{
 							top: 100,
 							left: 100,
-							componentKey:'button'
+							componentKey:'button',
+							focus:true
 						},
 						{
 							top: 200,

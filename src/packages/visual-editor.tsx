@@ -1,6 +1,6 @@
 import { computed, defineComponent, PropType, ref } from "vue";
 import '@/packages/visual-editor.scss'
-import { VisualEditorComponent, VisualEditorConfig, VisualEditorModelValue } from "./visual-editor.utils";
+import { createNewBlock, VisualEditorComponent, VisualEditorConfig, VisualEditorModelValue } from "./visual-editor.utils";
 import { useModel } from "./utils/useModel";
 import { VisualEditorBlock } from "./visual-editor-block";
 export const VisualEditor = defineComponent({
@@ -57,12 +57,11 @@ export const VisualEditor = defineComponent({
         /* 在容器中放置的时候，通过事件对象的offsetX、offsetY添加一条组件数据 */
         drop: (e: DragEvent) => {
           const blocks = dataModel.value.blocks || [];
-          blocks.push({
+          blocks.push(createNewBlock({
+            component:component!,
             top: e.offsetY,
-            left: e.offsetX,
-            componentKey: component!.key,
-            adjustPosition: true
-          })
+            left: e.offsetX
+          }))
           dataModel.value = { ...dataModel.value, blocks }
         }
       }
