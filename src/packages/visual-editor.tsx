@@ -21,42 +21,51 @@ export const VisualEditor = defineComponent({
       height: `${dataModel.value.container.height}px`
     }))
     // console.log(props.config)
-    const menuDraggier = {
-      current: {
-        component: null as null | VisualEditorComponent
-      },
-      dragstart: (e: DragEvent, component: VisualEditorComponent) => {
-        containerRef.value.addEventListener('dragenter', menuDraggier.dragenter);
-        containerRef.value.addEventListener('dragover', menuDraggier.dragover);
-        containerRef.value.addEventListener('dragleave', menuDraggier.dragleave);
-        containerRef.value.addEventListener('drop', menuDraggier.drop);
-        menuDraggier.current.component = component
-      },
-      dragenter: (e: DragEvent) => {
-        e.dataTransfer!.dropEffect = 'move'
-      },
-      dragover: (e: DragEvent) => {
-        e.preventDefault()
-      },
-      dragleave: (e: DragEvent) => {
-        e.dataTransfer!.dropEffect = 'none'
-      },
-      dragend: () => {
-        containerRef.value.removeEventListener('dragenter', menuDraggier.dragenter);
-        containerRef.value.removeEventListener('dragover', menuDraggier.dragover);
-        containerRef.value.removeEventListener('dragleave', menuDraggier.dragleave);
-        containerRef.value.removeEventListener('drop', menuDraggier.drop);
-        menuDraggier.current.component = null
-      },
-      drop: (e: DragEvent) => {
-        const blocks = dataModel.value.blocks || [];
-        blocks.push({
-          top: e.offsetY,
-          left: e.offsetX
-        })
-        dataModel.value = { ...dataModel.value, blocks }
+
+    const menuDraggier = (() => {
+      let component = null as null | VisualEditorComponent;
+      const blockHandler = {
+        /**
+         * 处理拖拽菜单组件开始动作
+         */
+        dragstart: (e: DragEvent, current: VisualEditorComponent) => {
+          containerRef.value.addEventListener('dragenter', containerHandler.dragenter);
+          containerRef.value.addEventListener('dragover', containerHandler.dragover);
+          containerRef.value.addEventListener('dragleave', containerHandler.dragleave);
+          containerRef.value.addEventListener('drop', containerHandler.drop);
+          component = current
+        },
+        /**
+         * 处理拖拽菜单结束动作
+         */
+        dragend: () => {
+          containerRef.value.removeEventListener('dragenter', containerHandler.dragenter);
+          containerRef.value.removeEventListener('dragover', containerHandler.dragover);
+          containerRef.value.removeEventListener('dragleave', containerHandler.dragleave);
+          containerRef.value.removeEventListener('drop', containerHandler.drop);
+          component = null
+        },
+      };
+
+      const containerHandler = {
+        /* 拖拽菜单组件进入容器的时候，设置鼠标为可放置状态 */
+        dragenter: (e: DragEvent) => e.dataTransfer!.dropEffect = 'move',
+        /* 拖拽菜单组件在容器中移动时候，禁用默认事件 */
+        dragover: (e: DragEvent) => e.preventDefault(),
+        /* 如果拖拽过程中鼠标离开了容器，设置鼠标为不可放置状态 */
+        dragleave: (e: DragEvent) => e.dataTransfer!.dropEffect = 'none',
+        /* 在容器中放置的时候，通过事件对象的offsetX、offsetY添加一条组件数据 */
+        drop: (e: DragEvent) => {
+          const blocks = dataModel.value.blocks || [];
+          blocks.push({
+            top: e.offsetY,
+            left: e.offsetX
+          })
+          dataModel.value = { ...dataModel.value, blocks }
+        }
       }
-    }
+      return blockHandler
+    })();
     return () => (
       <div class='visual-editor'>
         <div class="visual-editor-menu">
