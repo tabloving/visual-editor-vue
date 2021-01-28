@@ -16,15 +16,14 @@
 				VisualConfig,
 				dataJson: {
 					container: {
-						height: 300,
-						width: 400,
+						height: 400,
+						width: 500,
 					},
 					blocks: [
 						{
 							top: 100,
 							left: 100,
 							componentKey:'button',
-							focus:true
 						},
 						{
 							top: 200,
