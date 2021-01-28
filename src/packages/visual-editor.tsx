@@ -12,16 +12,32 @@ export const VisualEditor = defineComponent({
     'update:modelValue': (val?: VisualEditorModelValue) => true
   },
   setup(props, ctx) {
+
+    /* 双向绑定至，容器中组建的数据 */
     const dataModel = useModel(() => props.modelValue, val => ctx.emit('update:modelValue', val));
 
+    /* container节点dom的引用 */
     const containerRef = ref({} as HTMLDivElement);
 
+    /* container 节点的 style 样式对象 */
     const containerStyles = computed(() => ({
       width: `${dataModel.value.container.width}px`,
       height: `${dataModel.value.container.height}px`
-    }))
+    }));
     // console.log(props.config)
 
+    /* 计算选中与未选中的block数据 */
+    const focusData = computed(() => {
+      let focus: VisualEditorBlockData[] = [];
+      let unFocus: VisualEditorBlockData[] = [];
+      (dataModel.value.blocks || []).forEach(block => (block.focus ? focus : unFocus).push(block));
+      return {
+        focus,
+        unFocus
+      }
+    });
+
+    /* 对外暴露的一些方法 */
     const methods = {
       clearFocus: (block?: VisualEditorBlockData) => {
         let blocks = (dataModel.value.blocks || []);
@@ -33,6 +49,7 @@ export const VisualEditor = defineComponent({
       }
     };
 
+    /* 处理从菜单拖拽组件到容器的相关动作 */
     const menuDraggier = (() => {
       let component = null as null | VisualEditorComponent;
       const blockHandler = {
@@ -79,12 +96,14 @@ export const VisualEditor = defineComponent({
       return blockHandler
     })();
 
+    /* 处理 block 选中的相关动作 */
     const focusHandler = (() => {
       return {
         container: {
           onMouseDown: (e: MouseEvent) => {
             e.preventDefault();
             e.stopPropagation();
+            /* 点击空白处，清空选中的block */
             methods.clearFocus();
           }
         },
@@ -93,14 +112,56 @@ export const VisualEditor = defineComponent({
             e.stopPropagation();
             e.preventDefault();
             if (e.shiftKey) {
-              block.focus = !block.focus;
+              if (focusData.value.focus.length <= 1) {
+                block.focus = true
+              } else {
+                block.focus = !block.focus;
+              }
             } else {
-              block.focus = true;
-              methods.clearFocus(block);
+              if (!block.focus) {
+                block.focus = true;
+                methods.clearFocus(block);
+              }
             }
+            blockDraggier.mousedown(e);
           }
         }
       }
+    })();
+
+    /* 处理 block 在 container 中拖拽移动的相关动作 */
+    const blockDraggier = (() => {
+      let dragState = {
+        startX: 0,
+        startY: 0,
+        startPos: [] as { left: number, top: number }[]
+      }
+
+      const mousedown = (e: MouseEvent) => {
+        dragState = {
+          startX: e.clientX,
+          startY: e.clientY,
+          startPos: focusData.value.focus.map(({ top, left }) => ({ top, left }))
+        }
+        document.addEventListener('mousemove', mousemove);
+        document.addEventListener('mouseup', mouseup);
+      };
+
+      const mousemove = (e: MouseEvent) => {
+        const durX = e.clientX - dragState.startX;
+        const durY = e.clientY - dragState.startY;
+        focusData.value.focus.forEach((block, index) => {
+          block.top = dragState.startPos[index].top + durY;
+          block.left = dragState.startPos[index].left + durX;
+        })
+      };
+
+      const mouseup = () => {
+        document.removeEventListener('mousemove', mousemove);
+        document.removeEventListener('mouseup', mouseup);
+      };
+
+      return { mousedown };
     })();
 
     return () => (
