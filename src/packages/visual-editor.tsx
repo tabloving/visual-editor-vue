@@ -4,6 +4,7 @@ import { createNewBlock, VisualEditorBlockData, VisualEditorComponent, VisualEdi
 import { useModel } from "./utils/useModel";
 import { VisualEditorBlock } from "./visual-editor-block";
 import { useVisualCommand } from "./utils/visual-command";
+import { createEvent } from "./plugins/event";
 export const VisualEditor = defineComponent({
   props: {
     modelValue: { type: Object as PropType<VisualEditorModelValue>, required: true },
@@ -38,6 +39,16 @@ export const VisualEditor = defineComponent({
       }
     });
 
+    const dragstart = createEvent();
+    const dragend = createEvent();
+
+    dragstart.on(() => {
+      console.log('dragstart');
+    });
+
+    dragend.on(() => {
+      console.log('dragend');
+    })
     /* 对外暴露的一些方法 */
     const methods = {
       clearFocus: (block?: VisualEditorBlockData) => {
@@ -68,7 +79,8 @@ export const VisualEditor = defineComponent({
           containerRef.value.addEventListener('dragover', containerHandler.dragover);
           containerRef.value.addEventListener('dragleave', containerHandler.dragleave);
           containerRef.value.addEventListener('drop', containerHandler.drop);
-          component = current
+          component = current;
+          dragstart.emit()
         },
         /**
          * 处理拖拽菜单结束动作
@@ -91,13 +103,14 @@ export const VisualEditor = defineComponent({
         dragleave: (e: DragEvent) => e.dataTransfer!.dropEffect = 'none',
         /* 在容器中放置的时候，通过事件对象的offsetX、offsetY添加一条组件数据 */
         drop: (e: DragEvent) => {
-          const blocks = dataModel.value.blocks || [];
+          const blocks = [...dataModel.value.blocks || []];
           blocks.push(createNewBlock({
             component: component!,
             top: e.offsetY,
             left: e.offsetX
           }))
-          dataModel.value = { ...dataModel.value, blocks }
+          methods.updateBlocks(blocks);
+          dragend.emit()
         }
       }
       return blockHandler
@@ -141,14 +154,16 @@ export const VisualEditor = defineComponent({
       let dragState = {
         startX: 0,
         startY: 0,
-        startPos: [] as { left: number, top: number }[]
+        startPos: [] as { left: number, top: number }[],
+        dragging: false
       }
 
       const mousedown = (e: MouseEvent) => {
         dragState = {
           startX: e.clientX,
           startY: e.clientY,
-          startPos: focusData.value.focus.map(({ top, left }) => ({ top, left }))
+          startPos: focusData.value.focus.map(({ top, left }) => ({ top, left })),
+          dragging: false
         }
         document.addEventListener('mousemove', mousemove);
         document.addEventListener('mouseup', mouseup);
@@ -157,6 +172,10 @@ export const VisualEditor = defineComponent({
       const mousemove = (e: MouseEvent) => {
         const durX = e.clientX - dragState.startX;
         const durY = e.clientY - dragState.startY;
+        if (!dragState.dragging) {
+          dragState.dragging = true;
+          dragstart.emit()
+        }
         focusData.value.focus.forEach((block, index) => {
           block.top = dragState.startPos[index].top + durY;
           block.left = dragState.startPos[index].left + durX;
@@ -166,6 +185,9 @@ export const VisualEditor = defineComponent({
       const mouseup = () => {
         document.removeEventListener('mousemove', mousemove);
         document.removeEventListener('mouseup', mouseup);
+        if (dragState.dragging) { 
+          dragend.emit() 
+        }
       };
 
       return { mousedown };
@@ -173,8 +195,10 @@ export const VisualEditor = defineComponent({
 
     const commander = useVisualCommand({
       focusData,
-      updateBlocks:methods.updateBlocks,
-      dataModel
+      updateBlocks: methods.updateBlocks,
+      dataModel,
+      dragstart,
+      dragend
     });
 
     const buttons = [
