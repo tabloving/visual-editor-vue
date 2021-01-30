@@ -1,5 +1,7 @@
+@import './lib/iconfont/iconfont.css';
+
 $menuSize: 275px; // 菜单栏宽度
-$headSize: 60px; // 顶部操作栏高度
+$headSize: 80px; // 顶部操作栏高度
 $operatorSize: 275px; // 右侧编辑详情宽度
 
 $borderColor: #dcdfe6;
@@ -17,6 +19,8 @@ $primary: #409eff;
   left: 20px;
   right: 20px;
   background-color: white;
+  border-radius: 6px;
+  overflow: hidden;
 
   &:after {
     position: fixed;
@@ -83,6 +87,49 @@ $primary: #409eff;
     left: $menuSize;
     right: $operatorSize;
     height: $headSize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .visual-editor-head-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #acacac;
+      color: white;
+      width: 46px;
+      height: 48px;
+      transition: all 0.2s linear;
+      cursor: pointer;
+
+      & + .visual-editor-head-button {
+        margin-left: 1px;
+      }
+
+      &:first-child{
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+
+      &:last-child{
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+      }
+
+      &:hover{
+        background-color: white;
+        color:$primary;
+      }
+
+      i {
+        font-size: 20px;
+      }
+
+      span {
+        font-size: 12px;
+      }
+    }
   }
 
   & > .visual-editor-operator {
@@ -118,7 +165,7 @@ $primary: #409eff;
         .visual-editor-block {
           position: absolute;
 
-          &:after{
+          &:after {
             position: absolute;
             $space: 3px;
             top: -$space;
@@ -127,9 +174,9 @@ $primary: #409eff;
             bottom: -$space;
             content: '';
           }
-          &.visual-editor-block-focus{
-            &:after{
-              border:1px dashed $primary
+          &.visual-editor-block-focus {
+            &:after {
+              border: 1px dashed $primary;
             }
           }
         }
