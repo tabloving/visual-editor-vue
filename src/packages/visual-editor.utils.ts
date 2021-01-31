@@ -3,7 +3,8 @@ export interface VisualEditorBlockData {
   top: number,
   left: number,
   adjustPosition: boolean,
-  focus: boolean
+  focus: boolean,
+  zIndex: number,
 }
 
 export interface VisualEditorModelValue {
@@ -50,7 +51,8 @@ export function createNewBlock({
     left,
     componentKey: component!.key,
     adjustPosition: true,
-    focus: false
+    focus: false,
+    zIndex: 0
   }
 }
 export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>

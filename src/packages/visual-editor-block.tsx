@@ -24,6 +24,7 @@ export const VisualEditorBlock = defineComponent({
     const styles = computed(() => ({
       top: `${props.block.top}px`,
       left: `${props.block.left}px`,
+      zIndex: props.block.zIndex
     }))
 
     onMounted(() => {

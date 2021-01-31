@@ -9,30 +9,14 @@
 	import { VisualEditor } from "@/packages/visual-editor";
 	import { TestUseModel } from "@/packages/utils/useModel";
 	import {VisualConfig} from '@/visual.config';
+	import dataJson from './data.json';
 	export default defineComponent({
 		name: "App",
 		data() {
 			return {
 				VisualConfig,
 				flag:false,
-				dataJson: {
-					container: {
-						height: 400,
-						width: 500,
-					},
-					blocks: [
-						{
-							top: 100,
-							left: 100,
-							componentKey:'button',
-						},
-						{
-							top: 200,
-							left: 200,
-							componentKey:'input'
-						},
-					],
-				},
+				dataJson
 			};
 		},
 		components: {

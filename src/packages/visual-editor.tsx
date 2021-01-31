@@ -57,7 +57,7 @@ export const VisualEditor = defineComponent({
         }
         blocks.forEach(block => block.focus = false)
       },
-      updateBlocks: (blocks: VisualEditorBlockData[]) => {
+      updateBlocks: (blocks?: VisualEditorBlockData[]) => {
         dataModel.value = {
           ...dataModel.value,
           blocks
@@ -208,10 +208,10 @@ export const VisualEditor = defineComponent({
           try {
             const data = JSON.parse(text || '')
             dataModel.value = data
-        } catch (e) {
+          } catch (e) {
             console.error(e)
             ElMessageBox.alert('解析json字符串出错')
-        }
+          }
         }
       },
       {
@@ -219,6 +219,8 @@ export const VisualEditor = defineComponent({
         icon: 'icon-export',
         handler: () => $$dialog.textarea(JSON.stringify(dataModel.value), '导出的JSON数据', { editReadonly: true })
       },
+      { label: '置顶', icon: 'icon-place-top', handler: () => commander.placeTop(), tip: 'ctrl+up' },
+      { label: '置底', icon: 'icon-place-bottom', handler: () => commander.placeBottom(), tip: 'ctrl+down' },
       { label: '删除', icon: 'icon-delete', handler: () => commander.delete(), tip: 'ctrl+d,backspace,delete' },
       { label: '清空', icon: 'icon-reset', handler: () => commander.clear() },
     ]
