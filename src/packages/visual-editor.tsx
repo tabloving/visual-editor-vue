@@ -201,6 +201,7 @@ export const VisualEditor = defineComponent({
       { label: '撤销', icon: 'icon-back', handler: commander.undo, tip: 'ctrl+z' },
       { label: '重做', icon: 'icon-forward', handler: commander.redo, tip: 'ctrl+y,ctrl+shift+z' },
       { label: '删除', icon: 'icon-delete', handler: () => commander.delete(), tip: 'ctrl+d,backspace,delete' },
+      { label: '清空', icon: 'icon-reset', handler: () => commander.clear() },
     ]
 
     return () => (
@@ -219,17 +220,16 @@ export const VisualEditor = defineComponent({
           ))}
         </div>
         <div class="visual-editor-head">
-          {buttons.map((btn, index) => (
-            <el-tooltip
-              effect="dark"
-              content={btn.tip}
-              placement="bottom">
-              <div key={index} class='visual-editor-head-button' onClick={btn.handler}>
-                <i class={`iconfont ${btn.icon}`}></i>
-                <span>{btn.label}</span>
-              </div>
+          {buttons.map((btn, index) => {
+            const content = (<div key={index} class="visual-editor-head-button" onClick={btn.handler}>
+              <i class={`iconfont ${btn.icon}`} />
+              <span>{btn.label}</span>
+            </div>)
+            return !btn.tip ? content : <el-tooltip effect="dark" content={btn.tip} placement="bottom">
+              {content}
             </el-tooltip>
-          ))}
+          }
+          )}
         </div>
         <div class="visual-editor-operator">
           visual-editor-operator
@@ -254,7 +254,7 @@ export const VisualEditor = defineComponent({
             </div>
           </div>
         </div>
-      </div>
+      </div >
     )
   }
 })

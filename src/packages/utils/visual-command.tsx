@@ -17,6 +17,7 @@ export function useVisualCommand({
 }) {
   const commander = useCommander();
 
+  // 注册删除命令
   commander.registry({
     name: 'delete',
     keyboard: ['backspace', 'delete', 'ctrl+d'],
@@ -40,6 +41,7 @@ export function useVisualCommand({
     }
   });
 
+  // 拖拽命令
   commander.registry({
     name: 'drag',
     init() {
@@ -69,11 +71,31 @@ export function useVisualCommand({
     }
   })
 
+  // 注册清空命令
+  commander.registry({
+    name: 'clear',
+    execute: () => {
+      let data = {
+        before: deepcopy(dataModel.value.blocks || []),
+        after: deepcopy([]),
+      }
+      return {
+        redo: () => {
+          updateBlocks(deepcopy(data.after))
+        },
+        undo: () => {
+          updateBlocks(deepcopy(data.before))
+        },
+      }
+    }
+  })
+
   commander.init()
 
   return {
     undo: () => commander.state.commands.undo(),
     redo: () => commander.state.commands.redo(),
     delete: () => commander.state.commands.delete(),
+    clear: () => commander.state.commands.clear(),
   }
 }
