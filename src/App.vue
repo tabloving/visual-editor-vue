@@ -8,12 +8,13 @@
 	import { defineComponent } from "vue";
 	import { VisualEditor } from "@/packages/visual-editor";
 	import { TestUseModel } from "@/packages/utils/useModel";
-	import {VisualConfig} from '@/visual.config'
+	import {VisualConfig} from '@/visual.config';
 	export default defineComponent({
 		name: "App",
 		data() {
 			return {
 				VisualConfig,
+				flag:false,
 				dataJson: {
 					container: {
 						height: 400,
@@ -35,7 +36,7 @@
 			};
 		},
 		components: {
-			VisualEditor,
+			VisualEditor
 		},
 	});
 </script>

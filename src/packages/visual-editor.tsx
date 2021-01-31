@@ -5,6 +5,8 @@ import { useModel } from "./utils/useModel";
 import { VisualEditorBlock } from "./visual-editor-block";
 import { useVisualCommand } from "./utils/visual-command";
 import { createEvent } from "./plugins/event";
+import { $$dialog } from "./utils/dialog-service";
+import { ElMessageBox } from "element-plus";
 export const VisualEditor = defineComponent({
   props: {
     modelValue: { type: Object as PropType<VisualEditorModelValue>, required: true },
@@ -200,6 +202,23 @@ export const VisualEditor = defineComponent({
     const buttons = [
       { label: '撤销', icon: 'icon-back', handler: commander.undo, tip: 'ctrl+z' },
       { label: '重做', icon: 'icon-forward', handler: commander.redo, tip: 'ctrl+y,ctrl+shift+z' },
+      {
+        label: '导入', icon: 'icon-import', handler: async () => {
+          const text = await $$dialog.input('', '请输入倒入的JSON字符串')
+          try {
+            const data = JSON.parse(text || '')
+            dataModel.value = data
+        } catch (e) {
+            console.error(e)
+            ElMessageBox.alert('解析json字符串出错')
+        }
+        }
+      },
+      {
+        label: '导出',
+        icon: 'icon-export',
+        handler: () => $$dialog.textarea(JSON.stringify(dataModel.value), '导出的JSON数据', { editReadonly: true })
+      },
       { label: '删除', icon: 'icon-delete', handler: () => commander.delete(), tip: 'ctrl+d,backspace,delete' },
       { label: '清空', icon: 'icon-reset', handler: () => commander.clear() },
     ]
