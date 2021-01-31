@@ -42,13 +42,9 @@ export const VisualEditor = defineComponent({
     const dragstart = createEvent();
     const dragend = createEvent();
 
-    dragstart.on(() => {
-      console.log('dragstart');
-    });
+    // dragstart.on(() => {console.log('dragstart')});
+    // dragend.on(() => {console.log('dragend')});
 
-    dragend.on(() => {
-      console.log('dragend');
-    })
     /* 对外暴露的一些方法 */
     const methods = {
       clearFocus: (block?: VisualEditorBlockData) => {
@@ -122,15 +118,15 @@ export const VisualEditor = defineComponent({
         container: {
           onMouseDown: (e: MouseEvent) => {
             e.preventDefault();
-            e.stopPropagation();
+            if (e.currentTarget !== e.target) return;
             /* 点击空白处，清空选中的block */
-            methods.clearFocus();
+            if (!e.shiftKey) {
+              methods.clearFocus();
+            }
           }
         },
         block: {
           onMouseDown: (e: MouseEvent, block: VisualEditorBlockData) => {
-            e.stopPropagation();
-            e.preventDefault();
             if (e.shiftKey) {
               if (focusData.value.focus.length <= 1) {
                 block.focus = true
@@ -185,8 +181,8 @@ export const VisualEditor = defineComponent({
       const mouseup = () => {
         document.removeEventListener('mousemove', mousemove);
         document.removeEventListener('mouseup', mouseup);
-        if (dragState.dragging) { 
-          dragend.emit() 
+        if (dragState.dragging) {
+          dragend.emit()
         }
       };
 
@@ -224,10 +220,15 @@ export const VisualEditor = defineComponent({
         </div>
         <div class="visual-editor-head">
           {buttons.map((btn, index) => (
-            <div key={index} class='visual-editor-head-button' onClick={btn.handler}>
-              <i class={`iconfont ${btn.icon}`}></i>
-              <span>{btn.label}</span>
-            </div>
+            <el-tooltip
+              effect="dark"
+              content={btn.tip}
+              placement="bottom">
+              <div key={index} class='visual-editor-head-button' onClick={btn.handler}>
+                <i class={`iconfont ${btn.icon}`}></i>
+                <span>{btn.label}</span>
+              </div>
+            </el-tooltip>
           ))}
         </div>
         <div class="visual-editor-operator">

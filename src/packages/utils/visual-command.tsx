@@ -21,18 +21,18 @@ export function useVisualCommand({
     name: 'delete',
     keyboard: ['backspace', 'delete', 'ctrl+d'],
     execute: () => {
-      console.log('执行了删除命令');
+      // console.log('执行了删除命令');
       let data = {
         before: dataModel.value.blocks || [],
         after: focusData.value.unFocus
       }
       return {
         redo: () => {
-          console.log('重做删除命令');
+          // console.log('重做删除命令');
           updateBlocks(data.after)
         },
         undo: () => {
-          console.log('撤回了删除命令');
+          // console.log('撤回了删除命令');
           updateBlocks(data.before)
         },
 

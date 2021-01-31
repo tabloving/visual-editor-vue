@@ -1,4 +1,5 @@
-import {onUnmounted, reactive } from "vue";
+import { onUnmounted, reactive } from "vue";
+import { KeyboardCode } from "./keyboard-code";
 
 export interface CommandExecute {
   undo?: () => void,
@@ -45,12 +46,40 @@ export function useCommander() {
     }
   }
 
+  const keyboardEvent = (() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (document.activeElement !== document.body) return;
+      const { shiftKey, ctrlKey, altKey, keyCode, metaKey } = e;
+      let keyString: string[] = [];
+      if (ctrlKey || metaKey) keyString.push('ctrl');
+      if (shiftKey) keyString.push('shift');
+      if (altKey) keyString.push('alt');
+      keyString.push(KeyboardCode[keyCode]);
+      const keyNames = keyString.join('+');
+      state.commandArray.forEach(({keyboard, name}) => {
+        if (!keyboard) return;
+        const keys = Array.isArray(keyboard) ? keyboard : [keyboard];
+        if(keys.indexOf(keyNames) > -1){
+          state.commands[name]();
+          e.stopPropagation();
+          e.preventDefault();
+        }
+      })
+    }
+    const init = () => {
+      window.addEventListener('keydown', onKeyDown);
+      return () => window.removeEventListener('keydown', onKeyDown);
+    }
+    return init
+  })();
+
   const init = () => {
     const onKeydown = (e: KeyboardEvent) => {
       // console.log('监听到键盘时间')
     }
     window.addEventListener('keydown', onKeydown)
-    state.commandArray.forEach(command => !!command.init && state.destroyList.push(command.init()))
+    state.commandArray.forEach(command => !!command.init && state.destroyList.push(command.init()));
+    state.destroyList.push(keyboardEvent());
     state.destroyList.push(() => window.removeEventListener('keydown', onKeydown))
   }
 
