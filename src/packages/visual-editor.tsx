@@ -7,6 +7,7 @@ import { useVisualCommand } from "./utils/visual-command";
 import { createEvent } from "./plugins/event";
 import { $$dialog } from "./utils/dialog-service";
 import { ElMessageBox } from "element-plus";
+import { $$dropdown, DropdownOption } from "./utils/dropdown-service";
 export const VisualEditor = defineComponent({
   props: {
     modelValue: { type: Object as PropType<VisualEditorModelValue>, required: true },
@@ -65,6 +66,19 @@ export const VisualEditor = defineComponent({
         dataModel.value = {
           ...dataModel.value,
           blocks
+        }
+      },
+      showBlockData: (block: VisualEditorBlockData) => {
+        $$dialog.textarea(JSON.stringify(block), '节点数据', { editReadonly: true })
+      },
+      importBlockData: async (block: VisualEditorBlockData) => {
+        const text = await $$dialog.textarea('', '请输入节点Json字符串')
+        try {
+          const data = JSON.parse(text || '')
+          commander.updateBlock(data, block)
+        } catch (e) {
+          console.log(e)
+          ElMessageBox.alert('解析Json字符串出错')
         }
       }
     };
@@ -250,7 +264,7 @@ export const VisualEditor = defineComponent({
 
         mark.x = currentMark.x
         mark.y = currentMark.y
-        
+
         const durX = moveX - startX
         const durY = moveY - startY
 
@@ -273,6 +287,24 @@ export const VisualEditor = defineComponent({
         mousedown
       };
     })();
+
+    /* 其他的一些事件处理 */
+    const handler = {
+      onContextMenuBlock: (e: MouseEvent, block: VisualEditorBlockData) => {
+        e.preventDefault();
+        e.stopPropagation();
+        $$dropdown({
+          reference: e,
+          content: () => <>
+            <DropdownOption label='置顶节点' icon='icon-place-top' {...{ onClick: commander.placeTop }} />,
+            <DropdownOption label='置底节点' icon='icon-place-bottom' {...{ onClick: commander.placeBottom }} />,
+            <DropdownOption label='删除节点' icon='icon-delete' {...{ onClick: commander.delete }} />,
+            <DropdownOption label='查看数据' icon='icon-browse' {...{ onClick: () => methods.showBlockData(block) }} />,
+            <DropdownOption label='导入节点' icon='icon-import' {...{ onClick: () => methods.importBlockData(block) }} />,
+          </>
+        })
+      }
+    }
 
     const commander = useVisualCommand({
       focusData,
@@ -351,7 +383,9 @@ export const VisualEditor = defineComponent({
                   block={block}
                   key={index}
                   {...{
-                    onMouseDown: (e: MouseEvent) => focusHandler.block.onMouseDown(e, block)
+                    onMouseDown: (e: MouseEvent) => focusHandler.block.onMouseDown(e, block),
+                    onContextMenu: (e: MouseEvent) => handler.onContextMenuBlock(e, block)
+
                   }} />
               ))
               )}

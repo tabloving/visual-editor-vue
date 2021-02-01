@@ -1,0 +1,14 @@
+.dropdown-service {
+  padding: 8px 0;
+  position: fixed;
+  z-index: 99;
+
+  .dropdown-option {
+    padding: 5px 12px;
+    font-size: 14px;
+
+    & > i {
+      margin-right: 4px;
+    }
+  }
+}

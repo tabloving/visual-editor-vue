@@ -95,55 +95,81 @@ export function useVisualCommand({
     name: 'placeTop',
     keyboard: 'ctrl+up',
     execute: () => {
-        let data = {
-            before: deepcopy(dataModel.value.blocks),
-            after: deepcopy((() => {
-                const {focus, unFocus} = focusData.value
-                const maxZIndex = unFocus.reduce((prev, block) => Math.max(prev, block.zIndex), -Infinity) + 1
-                focus.forEach(block => block.zIndex = maxZIndex)
-                return deepcopy(dataModel.value.blocks)
-            })()),
-        }
-        return {
-            redo: () => {
-                updateBlocks(deepcopy(data.after))
-            },
-            undo: () => {
-                updateBlocks(deepcopy(data.before))
-            },
-        }
+      let data = {
+        before: deepcopy(dataModel.value.blocks),
+        after: deepcopy((() => {
+          const { focus, unFocus } = focusData.value
+          const maxZIndex = unFocus.reduce((prev, block) => Math.max(prev, block.zIndex), -Infinity) + 1
+          focus.forEach(block => block.zIndex = maxZIndex)
+          return deepcopy(dataModel.value.blocks)
+        })()),
+      }
+      return {
+        redo: () => {
+          updateBlocks(deepcopy(data.after))
+        },
+        undo: () => {
+          updateBlocks(deepcopy(data.before))
+        },
+      }
     }
-})
+  })
 
-// 注册置底命令
-commander.registry({
+  // 注册置底命令
+  commander.registry({
     name: 'placeBottom',
     keyboard: 'ctrl+down',
     execute: () => {
-        let data = {
-            before: deepcopy(dataModel.value.blocks),
-            after: deepcopy((() => {
-                const {focus, unFocus} = focusData.value
-                let minZIndex = unFocus.reduce((prev, block) => Math.min(prev, block.zIndex), Infinity) - 1
-                if (minZIndex < 0) {
-                    const dur = Math.abs(minZIndex)
-                    unFocus.forEach(block => block.zIndex += dur)
-                    minZIndex = 0
-                }
-                focus.forEach(block => block.zIndex = minZIndex)
-                return deepcopy(dataModel.value.blocks)
-            })()),
-        }
-        return {
-            redo: () => {
-                updateBlocks(deepcopy(data.after))
-            },
-            undo: () => {
-                updateBlocks(deepcopy(data.before))
-            },
-        }
+      let data = {
+        before: deepcopy(dataModel.value.blocks),
+        after: deepcopy((() => {
+          const { focus, unFocus } = focusData.value
+          let minZIndex = unFocus.reduce((prev, block) => Math.min(prev, block.zIndex), Infinity) - 1
+          if (minZIndex < 0) {
+            const dur = Math.abs(minZIndex)
+            unFocus.forEach(block => block.zIndex += dur)
+            minZIndex = 0
+          }
+          focus.forEach(block => block.zIndex = minZIndex)
+          return deepcopy(dataModel.value.blocks)
+        })()),
+      }
+      return {
+        redo: () => {
+          updateBlocks(deepcopy(data.after))
+        },
+        undo: () => {
+          updateBlocks(deepcopy(data.before))
+        },
+      }
     }
-})
+  })
+
+  commander.registry({
+    name: 'updateBlock',
+    execute: (newBlock: VisualEditorBlockData, oldBlock: VisualEditorBlockData) => {
+      let blocks = deepcopy(dataModel.value.blocks || [])
+      let data = {
+        before: blocks,
+        after: (()=> {
+          blocks = [...blocks]
+          const index = blocks.indexOf(oldBlock)
+          if(index > -1){
+            blocks.splice(index, 1,newBlock)
+          }
+          return deepcopy(blocks)
+        })()
+      }
+      return {
+        redo: () => { 
+          updateBlocks(deepcopy(data.after))
+        },
+        undo: () => { 
+          updateBlocks(deepcopy(data.before))
+        }
+      }
+    }
+  })
 
   commander.init()
 
@@ -153,6 +179,7 @@ commander.registry({
     delete: () => commander.state.commands.delete(),
     clear: () => commander.state.commands.clear(),
     placeTop: () => commander.state.commands.placeTop(),
-    placeBottom: () => commander.state.commands.placeBottom()
+    placeBottom: () => commander.state.commands.placeBottom(),
+    updateBlock: (newBlock: VisualEditorBlockData, oldBlock: VisualEditorBlockData) => commander.state.commands.updateBlock(newBlock, oldBlock),
   }
 }
