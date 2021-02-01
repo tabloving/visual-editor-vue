@@ -1,20 +1,53 @@
 import { createVisualEditorConfig } from "./packages/visual-editor.utils";
-import {ElButton, ElInput} from 'element-plus'
+import { ElButton, ElInput } from 'element-plus'
+import { createEditorColorProp, createEditorInputProp, createEditorSelectProp } from "./packages/visual-editor-props";
 export const VisualConfig = createVisualEditorConfig();
+
+/*----------------------文本----------------------*/
 VisualConfig.registry('text', {
   label: '文本',
   preview: () => '预览文本',
   render: () => '渲染文本',
+  props: {
+    text: createEditorInputProp('显示文本'),
+    color: createEditorColorProp('字体颜色'),
+    size: createEditorSelectProp('字体大小', [
+      { label: '14px', val: '14px' },
+      { label: '18px', val: '18px' },
+      { label: '24px', val: '24px' },
+    ])
+
+
+  }
 })
 
+/*----------------------按钮----------------------*/
 VisualConfig.registry('button', {
   label: '按钮',
   preview: () => <ElButton>预览按钮</ElButton>,
   render: () => <ElButton>渲染按钮</ElButton>,
+  props: {
+    text: createEditorInputProp('显示文本'),
+    type: createEditorSelectProp('按钮类型', [
+      { label: '基础', val: 'success' },
+      { label: '成功', val: 'warning' },
+      { label: '警告', val: 'danger' },
+      { label: '危险', val: 'info' },
+      { label: '信息', val: 'text' },
+      { label: '文本', val: 'primary' },
+    ]),
+    size: createEditorSelectProp('按钮大小', [
+      { label: '默认', val: '' },
+      { label: '中等', val: 'medium' },
+      { label: '小型', val: 'small' },
+      { label: '迷你', val: 'mini' },
+    ])
+  }
 })
 
+/*----------------------输入框----------------------*/
 VisualConfig.registry('input', {
   label: '输入框',
-   preview: () => <ElInput />,
-   render: () => <ElInput />,
+  preview: () => <ElInput />,
+  render: () => <ElInput />,
 })

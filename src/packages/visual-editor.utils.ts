@@ -1,3 +1,5 @@
+import { VisualEditorProps } from "./visual-editor-props";
+
 export interface VisualEditorBlockData {
   componentKey: string,     // 映射 VisualEditorConfig中componentMap的component对象
   top: number,              // 组件的的top定位
@@ -21,8 +23,9 @@ export interface VisualEditorModelValue {
 export interface VisualEditorComponent {
   key: string,
   label: string,
-  preview: () => JSX.Element
-  render: () => JSX.Element
+  preview: () => JSX.Element,
+  render: () => JSX.Element,
+  props?: Record<string, VisualEditorProps>
 }
 
 export interface VisualEditorMarkLines {
