@@ -8,6 +8,7 @@ import { createEvent } from "./plugins/event";
 import { $$dialog } from "./utils/dialog-service";
 import { ElMessageBox } from "element-plus";
 import { $$dropdown, DropdownOption } from "./utils/dropdown-service";
+import { VisualEditorOperator } from "./visual-editor-operator";
 export const VisualEditor = defineComponent({
   props: {
     modelValue: { type: Object as PropType<VisualEditorModelValue>, required: true },
@@ -43,7 +44,7 @@ export const VisualEditor = defineComponent({
     });
 
     const state = reactive({
-      selectBlock: null as null | VisualEditorBlockData, // 当前选中的组件  
+      selectBlock: undefined as undefined | VisualEditorBlockData, // 当前选中的组件  
     })
 
     const dragstart = createEvent();
@@ -142,7 +143,7 @@ export const VisualEditor = defineComponent({
             /* 点击空白处，清空选中的block */
             if (!e.shiftKey) {
               methods.clearFocus();
-              state.selectBlock = null;
+              state.selectBlock = undefined;
             }
           }
         },
@@ -369,9 +370,9 @@ export const VisualEditor = defineComponent({
           }
           )}
         </div>
-        <div class="visual-editor-operator">
-          visual-editor-operator
-        </div>
+
+       <VisualEditorOperator block={state.selectBlock} config={props.config}></VisualEditorOperator>
+
         <div class="visual-editor-body">
           <div class="visual-editor-content">
             <div class="visual-editor-container"

@@ -29,12 +29,12 @@ VisualConfig.registry('button', {
   props: {
     text: createEditorInputProp('显示文本'),
     type: createEditorSelectProp('按钮类型', [
-      { label: '基础', val: 'success' },
-      { label: '成功', val: 'warning' },
-      { label: '警告', val: 'danger' },
-      { label: '危险', val: 'info' },
-      { label: '信息', val: 'text' },
-      { label: '文本', val: 'primary' },
+      { label: '基础', val: 'primary' },
+      { label: '成功', val: 'success' },
+      { label: '警告', val: 'warning' },
+      { label: '危险', val: 'danger' },
+      { label: '信息', val: 'info' },
+      { label: '文本', val: 'text' },
     ]),
     size: createEditorSelectProp('按钮大小', [
       { label: '默认', val: '' },
