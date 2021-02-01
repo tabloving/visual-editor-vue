@@ -153,7 +153,7 @@ export function useVisualCommand({
         before: blocks,
         after: (()=> {
           blocks = [...blocks]
-          const index = blocks.indexOf(oldBlock)
+          const index = dataModel.value.blocks!.indexOf(oldBlock)
           if(index > -1){
             blocks.splice(index, 1,newBlock)
           }
