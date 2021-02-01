@@ -5,42 +5,48 @@
   },
   "blocks": [
     {
-      "top": 137,
-      "left": 72,
+      "top": 76,
+      "left": 27,
       "componentKey": "button",
+      "adjustPosition": false,
       "focus": false,
-      "zIndex": 0
+      "zIndex": 0,
+      "width": 98,
+      "height": 40,
+      "hasResized": false
     },
     {
-      "top": 156,
-      "left": 239,
+      "top": 212,
+      "left": 61,
       "componentKey": "input",
+      "adjustPosition": false,
       "focus": false,
-      "zIndex": 0
+      "zIndex": 0,
+      "width": 202,
+      "height": 40,
+      "hasResized": false
     },
     {
-      "top": 80.5,
-      "left": 103,
+      "top": 105.5,
+      "left": 221,
       "componentKey": "text",
       "adjustPosition": false,
       "focus": false,
-      "zIndex": 0
+      "zIndex": 0,
+      "width": 64,
+      "height": 21,
+      "hasResized": false
     },
     {
-      "top": 265,
-      "left": 150,
-      "componentKey": "input",
-      "adjustPosition": false,
-      "focus": false,
-      "zIndex": 0
-    },
-    {
-      "top": 54,
-      "left": 296,
+      "top": 180,
+      "left": 349,
       "componentKey": "button",
       "adjustPosition": false,
-      "focus": true,
-      "zIndex": 0
+      "focus": false,
+      "zIndex": 0,
+      "width": 98,
+      "height": 40,
+      "hasResized": false
     }
   ]
 }

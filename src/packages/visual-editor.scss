@@ -10,7 +10,7 @@ $textColor: #314659;
 $iconColor: rgba(0, 0, 0, 0.45);
 $boxShadowColor: #f0f1f2;
 
-$primary: #409eff;
+$primary: #3fb280;
 
 .visual-editor {
   position: fixed;
@@ -28,7 +28,7 @@ $primary: #409eff;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: #35495d;
     content: '';
     z-index: -1;
   }
@@ -179,6 +179,20 @@ $primary: #409eff;
               border: 1px dashed $primary;
             }
           }
+        }
+
+        .visual-editor-mark-line-y {
+          position: absolute;
+          left: 0;
+          right: 0;
+          border-top: 1px dashed $primary;
+        }
+
+        .visual-editor-mark-line-x {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          border-left: 1px dashed $primary;
         }
       }
     }

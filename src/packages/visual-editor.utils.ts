@@ -1,10 +1,13 @@
 export interface VisualEditorBlockData {
   componentKey: string,     // 映射 VisualEditorConfig中componentMap的component对象
-  top: number,
-  left: number,
-  adjustPosition: boolean,
-  focus: boolean,
-  zIndex: number,
+  top: number,              // 组件的的top定位
+  left: number,             // 组件的left定位
+  adjustPosition: boolean,  // 是否需要调整位置 居中放置
+  focus: boolean,           // 当前是否为选中组件
+  zIndex: number,           // 组件的z-index
+  width: number,            // 组件宽度
+  height: number,           // 组件高度
+  hasResized: boolean,      // 是否调整过宽度或者高度
 }
 
 export interface VisualEditorModelValue {
@@ -20,6 +23,11 @@ export interface VisualEditorComponent {
   label: string,
   preview: () => JSX.Element
   render: () => JSX.Element
+}
+
+export interface VisualEditorMarkLines {
+  x: { left: number, showLeft: number }[],
+  y: { top: number, showTop: number }[],
 }
 
 export function createVisualEditorConfig() {
@@ -52,7 +60,10 @@ export function createNewBlock({
     componentKey: component!.key,
     adjustPosition: true,
     focus: false,
-    zIndex: 0
+    zIndex: 0,
+    width: 0,
+    height: 0,
+    hasResized: false,
   }
 }
 export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>
