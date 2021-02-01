@@ -277,6 +277,8 @@ export const VisualEditor = defineComponent({
       const mouseup = () => {
         document.removeEventListener('mousemove', mousemove);
         document.removeEventListener('mouseup', mouseup);
+        mark.x = null;  // 清除 横向 辅助线
+        mark.y = null;  // 清除 纵向 辅助线
         if (dragState.dragging) {
           dragend.emit()
         }
@@ -296,11 +298,11 @@ export const VisualEditor = defineComponent({
         $$dropdown({
           reference: e,
           content: () => <>
-            <DropdownOption label='置顶节点' icon='icon-place-top' {...{ onClick: commander.placeTop }} />,
-            <DropdownOption label='置底节点' icon='icon-place-bottom' {...{ onClick: commander.placeBottom }} />,
-            <DropdownOption label='删除节点' icon='icon-delete' {...{ onClick: commander.delete }} />,
-            <DropdownOption label='查看数据' icon='icon-browse' {...{ onClick: () => methods.showBlockData(block) }} />,
-            <DropdownOption label='导入节点' icon='icon-import' {...{ onClick: () => methods.importBlockData(block) }} />,
+            <DropdownOption label='置顶节点' icon='icon-place-top' customClass='top' {...{ onClick: commander.placeTop }} />
+            <DropdownOption label='置底节点' icon='icon-place-bottom' customClass='end' {...{ onClick: commander.placeBottom }} />
+            <DropdownOption label='删除节点' icon='icon-delete' customClass='delete' {...{ onClick: commander.delete }} />
+            <DropdownOption label='查看数据' icon='icon-browse' customClass='view' {...{ onClick: () => methods.showBlockData(block) }} />
+            <DropdownOption label='导入节点' icon='icon-import' customClass='import' {...{ onClick: () => methods.importBlockData(block) }} />
           </>
         })
       }
