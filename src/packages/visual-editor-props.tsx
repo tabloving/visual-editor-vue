@@ -19,7 +19,8 @@ export function createEditorInputProp(label: string): VisualEditorProps {
   }
 }
 
-/* ----------------------------------color------------------------------ */export function createEditorColorProp(label: string): VisualEditorProps {
+/* ----------------------------------color------------------------------ */
+export function createEditorColorProp(label: string): VisualEditorProps {
   return {
     type: VisualEditorPropsType.color,
     label

@@ -36,15 +36,16 @@ export const VisualEditorOperator = defineComponent({
           // 当前编辑容器属性
           props.updateModelValue({
             ...props.dataModel.value,
-            container:state.editData
+            container: state.editData
           })
 
         } else {
           // 当前编辑 block 属性
-          props.updateBlock({
+          const newBlock = {
             ...props.block,
             props: state.editData
-          }, props.block)
+          }
+          props.updateBlock(newBlock, props.block)
         }
       },
       reset: () => {
@@ -82,11 +83,11 @@ export const VisualEditorOperator = defineComponent({
       if (!props.block) {
         content = <>
           <ElFormItem label='容器宽度'>
-            <ElInputNumber v-model={state.editData.width} {...{step:100} as any} />
+            <ElInputNumber v-model={state.editData.width} {...{ step: 100 } as any} />
           </ElFormItem>
 
           <ElFormItem label='容器高度'>
-            <ElInputNumber v-model={state.editData.height} {...{step:100} as any} />
+            <ElInputNumber v-model={state.editData.height} {...{ step: 100 } as any} />
           </ElFormItem>
         </>
       } else {
