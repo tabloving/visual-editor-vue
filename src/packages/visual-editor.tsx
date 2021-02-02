@@ -196,8 +196,13 @@ export const VisualEditor = defineComponent({
           markLines: (() => {
             const { focus, unFocus } = focusData.value;
             const { top, left, width, height } = state.selectBlock!;
-            let lines: VisualEditorMarkLines = { x: [], y: [] }
-            unFocus.forEach(block => {
+            let lines: VisualEditorMarkLines = { x: [], y: [] };
+            [...unFocus,{
+              top: 0,
+              left: 0,
+              width:dataModel.value.container.width,
+              height:dataModel.value.container.height,
+            }].forEach(block => {
               const { top: t, left: l, width: w, height: h } = block
 
               lines.y.push({ top: t, showTop: t })// 顶部对齐顶部
@@ -231,9 +236,9 @@ export const VisualEditor = defineComponent({
         // 如果按住shift键 进行移动，则只能朝着一个方向移动  横向 / 纵向
         if (e.shiftKey) {
           if (Math.abs(moveX - startX) > Math.abs(moveY - startY)) {
-            moveX = startX
-          } else {
             moveY = startY
+          } else {
+            moveX = startX
           }
         }
 
