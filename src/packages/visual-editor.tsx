@@ -3,7 +3,7 @@ import '@/packages/visual-editor.scss'
 import { createNewBlock, VisualEditorBlockData, VisualEditorComponent, VisualEditorConfig, VisualEditorMarkLines, VisualEditorModelValue } from "./visual-editor.utils";
 import { useModel } from "./utils/useModel";
 import { VisualEditorBlock } from "./visual-editor-block";
-import { useVisualCommand } from "./utils/visual-command";
+import { useVisualCommand } from "./visual-command";
 import { createEvent } from "./plugins/event";
 import { $$dialog } from "./utils/dialog-service";
 import { ElMessageBox } from "element-plus";
@@ -371,7 +371,14 @@ export const VisualEditor = defineComponent({
           )}
         </div>
 
-       <VisualEditorOperator block={state.selectBlock} config={props.config} dataModel={dataModel}></VisualEditorOperator>
+       <VisualEditorOperator 
+       block={state.selectBlock} 
+       config={props.config} 
+       dataModel={dataModel} 
+       updateBlock={commander.updateBlock}
+       updateModelValue={commander.updateModelValue}
+       >
+       </VisualEditorOperator>
 
         <div class="visual-editor-body">
           <div class="visual-editor-content">
