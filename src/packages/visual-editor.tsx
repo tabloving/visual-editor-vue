@@ -43,8 +43,10 @@ export const VisualEditor = defineComponent({
       }
     });
 
+    const selectIndex = ref(-1)
+
     const state = reactive({
-      selectBlock: undefined as undefined | VisualEditorBlockData, // 当前选中的组件  
+      selectBlock: computed(() => (dataModel.value.blocks || [])[selectIndex.value])
     })
 
     const dragstart = createEvent();
@@ -143,12 +145,12 @@ export const VisualEditor = defineComponent({
             /* 点击空白处，清空选中的block */
             if (!e.shiftKey) {
               methods.clearFocus();
-              state.selectBlock = undefined;
+              selectIndex.value = -1
             }
           }
         },
         block: {
-          onMouseDown: (e: MouseEvent, block: VisualEditorBlockData) => {
+          onMouseDown: (e: MouseEvent, block: VisualEditorBlockData,index: number) => {
             if (e.shiftKey) {
               if (focusData.value.focus.length <= 1) {
                 block.focus = true
@@ -161,7 +163,7 @@ export const VisualEditor = defineComponent({
                 methods.clearFocus(block);
               }
             }
-            state.selectBlock = block;
+            selectIndex.value = index;
             blockDraggier.mousedown(e);
           }
         }
@@ -197,11 +199,11 @@ export const VisualEditor = defineComponent({
             const { focus, unFocus } = focusData.value;
             const { top, left, width, height } = state.selectBlock!;
             let lines: VisualEditorMarkLines = { x: [], y: [] };
-            [...unFocus,{
+            [...unFocus, {
               top: 0,
               left: 0,
-              width:dataModel.value.container.width,
-              height:dataModel.value.container.height,
+              width: dataModel.value.container.width,
+              height: dataModel.value.container.height,
             }].forEach(block => {
               const { top: t, left: l, width: w, height: h } = block
 
@@ -376,14 +378,14 @@ export const VisualEditor = defineComponent({
           )}
         </div>
 
-       <VisualEditorOperator 
-       block={state.selectBlock} 
-       config={props.config} 
-       dataModel={dataModel} 
-       updateBlock={commander.updateBlock}
-       updateModelValue={commander.updateModelValue}
-       >
-       </VisualEditorOperator>
+        <VisualEditorOperator
+          block={state.selectBlock}
+          config={props.config}
+          dataModel={dataModel}
+          updateBlock={commander.updateBlock}
+          updateModelValue={commander.updateModelValue}
+        >
+        </VisualEditorOperator>
 
         <div class="visual-editor-body">
           <div class="visual-editor-content">
@@ -398,7 +400,7 @@ export const VisualEditor = defineComponent({
                   block={block}
                   key={index}
                   {...{
-                    onMouseDown: (e: MouseEvent) => focusHandler.block.onMouseDown(e, block),
+                    onMouseDown: (e: MouseEvent) => focusHandler.block.onMouseDown(e, block,index),
                     onContextMenu: (e: MouseEvent) => handler.onContextMenuBlock(e, block)
 
                   }} />
