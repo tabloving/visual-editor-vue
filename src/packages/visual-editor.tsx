@@ -46,8 +46,16 @@ export const VisualEditor = defineComponent({
     const selectIndex = ref(-1)
 
     const state = reactive({
-      selectBlock: computed(() => (dataModel.value.blocks || [])[selectIndex.value])
+      selectBlock: computed(() => (dataModel.value.blocks || [])[selectIndex.value]),
+      editing: false,
     })
+
+    const classes = computed(() => [
+      'visual-editor',
+      {
+        'visual-editor-editing': state.editing
+      }
+    ])
 
     const dragstart = createEvent();
     const dragend = createEvent();
@@ -140,6 +148,7 @@ export const VisualEditor = defineComponent({
       return {
         container: {
           onMouseDown: (e: MouseEvent) => {
+            if(!state.editing) return;
             e.preventDefault();
             if (e.currentTarget !== e.target) return;
             /* 点击空白处，清空选中的block */
@@ -150,7 +159,8 @@ export const VisualEditor = defineComponent({
           }
         },
         block: {
-          onMouseDown: (e: MouseEvent, block: VisualEditorBlockData,index: number) => {
+          onMouseDown: (e: MouseEvent, block: VisualEditorBlockData, index: number) => {
+            if(!state.editing) return;
             if (e.shiftKey) {
               if (focusData.value.focus.length <= 1) {
                 block.focus = true
@@ -301,6 +311,7 @@ export const VisualEditor = defineComponent({
     /* 其他的一些事件处理 */
     const handler = {
       onContextMenuBlock: (e: MouseEvent, block: VisualEditorBlockData) => {
+        if(!state.editing) return;
         e.preventDefault();
         e.stopPropagation();
         $$dropdown({
@@ -316,6 +327,7 @@ export const VisualEditor = defineComponent({
       }
     }
 
+    /* 命令管理对象 */
     const commander = useVisualCommand({
       focusData,
       updateBlocks: methods.updateBlocks,
@@ -324,9 +336,18 @@ export const VisualEditor = defineComponent({
       dragend
     });
 
+    /* 操作栏按钮 */
     const buttons = [
       { label: '撤销', icon: 'icon-back', handler: commander.undo, tip: 'ctrl+z' },
       { label: '重做', icon: 'icon-forward', handler: commander.redo, tip: 'ctrl+y,ctrl+shift+z' },
+      {
+        label: () => state.editing ? '编辑' : '预览',
+        icon: () => state.editing ? 'icon-edit' : 'icon-browse',
+        handler: () => {
+          if (!state.editing) { methods.clearFocus() }
+          state.editing = !state.editing
+        }
+      },
       {
         label: '导入', icon: 'icon-import', handler: async () => {
           const text = await $$dialog.input('', '请输入倒入的JSON字符串')
@@ -351,7 +372,7 @@ export const VisualEditor = defineComponent({
     ]
 
     return () => (
-      <div class='visual-editor'>
+      <div class={classes.value}>
         <div class="visual-editor-menu">
           {props.config.componentList.map(component => (
             <div class="visual-editor-menu-item"
@@ -367,9 +388,11 @@ export const VisualEditor = defineComponent({
         </div>
         <div class="visual-editor-head">
           {buttons.map((btn, index) => {
+            const label = typeof btn.label === 'function' ? btn.label() : btn.label;
+            const icon = typeof btn.icon === 'function' ? btn.icon() : btn.icon;
             const content = (<div key={index} class="visual-editor-head-button" onClick={btn.handler}>
-              <i class={`iconfont ${btn.icon}`} />
-              <span>{btn.label}</span>
+              <i class={`iconfont ${icon}`} />
+              <span>{label}</span>
             </div>)
             return !btn.tip ? content : <el-tooltip effect="dark" content={btn.tip} placement="bottom">
               {content}
@@ -400,7 +423,7 @@ export const VisualEditor = defineComponent({
                   block={block}
                   key={index}
                   {...{
-                    onMouseDown: (e: MouseEvent) => focusHandler.block.onMouseDown(e, block,index),
+                    onMouseDown: (e: MouseEvent) => focusHandler.block.onMouseDown(e, block, index),
                     onContextMenu: (e: MouseEvent) => handler.onContextMenuBlock(e, block)
 
                   }} />

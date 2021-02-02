@@ -167,15 +167,15 @@ $primary: #3fb280;
         .visual-editor-block {
           position: absolute;
 
-          &:after {
-            position: absolute;
-            $space: 3px;
-            top: -$space;
-            left: -$space;
-            right: -$space;
-            bottom: -$space;
-            content: '';
-          }
+          // &:after {
+          //   position: absolute;
+          //   $space: 3px;
+          //   top: -$space;
+          //   left: -$space;
+          //   right: -$space;
+          //   bottom: -$space;
+          //   content: '';
+          // }
           &.visual-editor-block-focus {
             &:after {
               border: 1px dashed $primary;
@@ -195,6 +195,27 @@ $primary: #3fb280;
           top: 0;
           bottom: 0;
           border-left: 1px dashed $primary;
+        }
+      }
+    }
+  }
+
+  &.visual-editor-editing {
+    & > .visual-editor-body {
+      .visual-editor-container{
+        border: 1px dashed $primary;
+        box-sizing: border-box;
+
+        .visual-editor-block {
+          &:after {
+            position: absolute;
+            $space: 3px;
+            top: -$space;
+            left: -$space;
+            right: -$space;
+            bottom: -$space;
+            content: '';
+          }
         }
       }
     }
