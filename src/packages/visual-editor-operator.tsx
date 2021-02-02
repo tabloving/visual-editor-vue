@@ -1,6 +1,7 @@
 import deepcopy from "deepcopy";
 import { ElButton, ElColorPicker, ElForm, ElFormItem, ElInput, ElInputNumber, ElOption, ElSelect } from "element-plus";
 import { defineComponent, PropType, reactive, watch } from "vue";
+import { TablePropEditor } from "./components/table-prop-editor/table-prop-editor";
 import { VisualEditorProps, VisualEditorPropsType } from "./visual-editor-props";
 import { VisualEditorBlockData, VisualEditorConfig, VisualEditorModelValue } from "./visual-editor.utils";
 
@@ -72,9 +73,12 @@ export const VisualEditorOperator = defineComponent({
             ))
           })()}
         </ElSelect>),
-        [VisualEditorPropsType.table]: () => (<div>
-          编辑 table prop
-        </div>),
+        [VisualEditorPropsType.table]: () => (
+          <TablePropEditor 
+          v-model={state.editData[propName]} 
+          propConfig={propConfig} 
+          />
+        ),
       }[propConfig.type]()
     }
 

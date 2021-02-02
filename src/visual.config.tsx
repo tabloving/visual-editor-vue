@@ -62,9 +62,13 @@ VisualConfig.registry('select', {
     ))}
   </ElSelect>,
   props: {
-    options: createVisualEditorTableProp('下拉选项', [
-      { label: '显示值', filed: 'label' },
-      { label: '绑定值', filed: 'value' },
-    ])
+    options: createVisualEditorTableProp('下拉选项', {
+      options:[
+        { label: '显示值', filed: 'label' },
+        { label: '绑定值', filed: 'value' },
+        { label: '备注', filed: 'comments' },
+      ],
+      showKey:'label'
+    })
   }
 })

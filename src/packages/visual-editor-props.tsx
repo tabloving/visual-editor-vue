@@ -47,14 +47,17 @@ export function createEditorSelectProp(label: string, options: VisualEditorSelec
 
 /* --------------------------------table-------------------------------- */
 export type VisualEditorTableOptions = {
-  label: string,  // 列显示文本
-  filed: string   // 列绑定的字段
-}[]
+  options: {
+    label: string,  // 列显示文本
+    filed: string   // 列绑定的字段
+  }[],
+  showKey: string
+}
 
-export function createVisualEditorTableProp(label: string, table: VisualEditorTableOptions): VisualEditorProps{
+export function createVisualEditorTableProp(label: string, option: VisualEditorTableOptions): VisualEditorProps {
   return {
     type: VisualEditorPropsType.table,
     label,
-    table
+    table: option
   }
 }
