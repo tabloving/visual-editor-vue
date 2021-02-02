@@ -10,6 +10,7 @@ export interface VisualEditorBlockData {
   width: number,            // 组件宽度
   height: number,           // 组件高度
   hasResized: boolean,      // 是否调整过宽度或者高度
+  props: Record<string, any>, //组件的设计属性
 }
 
 export interface VisualEditorModelValue {
@@ -67,6 +68,7 @@ export function createNewBlock({
     width: 0,
     height: 0,
     hasResized: false,
+    props: {},
   }
 }
 export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>

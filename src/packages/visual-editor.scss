@@ -139,6 +139,8 @@ $primary: #3fb280;
     bottom: 0;
     width: $operatorSize;
     background-color: white;
+    padding: 20px 20px 80px;
+    box-sizing: border-box;
   }
 
   & > .visual-editor-body {
