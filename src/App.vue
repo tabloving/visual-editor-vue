@@ -1,6 +1,6 @@
 <template>
 	<div class="app">
-		<visual-editor v-model="dataJson" :config="VisualConfig" />
+		<visual-editor v-model="dataJson" :config="VisualConfig" :formData='formData' />
 	</div>
 </template>
 
@@ -16,7 +16,10 @@
 			return {
 				VisualConfig,
 				flag:false,
-				dataJson
+				dataJson,
+				formData:{
+					username:'admin'
+				}
 			};
 		},
 		components: {

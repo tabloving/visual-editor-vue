@@ -11,6 +11,7 @@ export interface VisualEditorBlockData {
   height: number,           // 组件高度
   hasResized: boolean,      // 是否调整过宽度或者高度
   props: Record<string, any>, //组件的设计属性
+  model: Record<string, string>, // 绑定的字段
 }
 
 export interface VisualEditorModelValue {
@@ -25,8 +26,9 @@ export interface VisualEditorComponent {
   key: string,
   label: string,
   preview: () => JSX.Element,
-  render: (data: { props: any }) => JSX.Element,
-  props?: Record<string, VisualEditorProps>
+  render: (data: { props: any, model: any }) => JSX.Element,
+  props?: Record<string, VisualEditorProps>,
+  model?: Record<string, string>,
 }
 
 export interface VisualEditorMarkLines {
@@ -41,12 +43,19 @@ export function createVisualEditorConfig() {
   return {
     componentList,
     componentMap,
-    registry: <Props extends Record<string, VisualEditorProps> = {}>(key: string, component: {
-      label: string,
-      preview: () => JSX.Element,
-      render: (data: { props: { [k in keyof Props]: any } }) => JSX.Element,
-      props?: Props
-    }) => {
+    registry: <_,
+      Props extends Record<string, VisualEditorProps> = {},
+      Model extends Record<string, string> = {},
+      >(key: string, component: {
+        label: string,
+        preview: () => JSX.Element,
+        render: (data: {
+          props: { [k in keyof Props]: any },
+          model: Partial<{ [k in keyof Model]: any }>,
+        }) => JSX.Element,
+        props?: Props,
+        model?: Model,
+      }) => {
       let comp = { ...component, key };
       componentList.push(comp);
       componentMap[key] = comp;
@@ -74,6 +83,7 @@ export function createNewBlock({
     height: 0,
     hasResized: false,
     props: {},
+    model: {},
   }
 }
 export type VisualEditorConfig = ReturnType<typeof createVisualEditorConfig>

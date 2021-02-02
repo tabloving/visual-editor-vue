@@ -12,7 +12,8 @@ import { VisualEditorOperator } from "./visual-editor-operator";
 export const VisualEditor = defineComponent({
   props: {
     modelValue: { type: Object as PropType<VisualEditorModelValue>, required: true },
-    config: { type: Object as PropType<VisualEditorConfig>, required: true }
+    config: { type: Object as PropType<VisualEditorConfig>, required: true },
+    formData: { type: Object as PropType<Record<string, any>>, required: true }
   },
   emits: {
     'update:modelValue': (val?: VisualEditorModelValue) => true
@@ -148,7 +149,7 @@ export const VisualEditor = defineComponent({
       return {
         container: {
           onMouseDown: (e: MouseEvent) => {
-            if(!state.editing) return;
+            if (!state.editing) return;
             e.preventDefault();
             if (e.currentTarget !== e.target) return;
             /* 点击空白处，清空选中的block */
@@ -160,7 +161,7 @@ export const VisualEditor = defineComponent({
         },
         block: {
           onMouseDown: (e: MouseEvent, block: VisualEditorBlockData, index: number) => {
-            if(!state.editing) return;
+            if (!state.editing) return;
             if (e.shiftKey) {
               if (focusData.value.focus.length <= 1) {
                 block.focus = true
@@ -311,7 +312,7 @@ export const VisualEditor = defineComponent({
     /* 其他的一些事件处理 */
     const handler = {
       onContextMenuBlock: (e: MouseEvent, block: VisualEditorBlockData) => {
-        if(!state.editing) return;
+        if (!state.editing) return;
         e.preventDefault();
         e.stopPropagation();
         $$dropdown({
@@ -341,8 +342,8 @@ export const VisualEditor = defineComponent({
       { label: '撤销', icon: 'icon-back', handler: commander.undo, tip: 'ctrl+z' },
       { label: '重做', icon: 'icon-forward', handler: commander.redo, tip: 'ctrl+y,ctrl+shift+z' },
       {
-        label: () => state.editing ? '编辑' : '预览',
-        icon: () => state.editing ? 'icon-edit' : 'icon-browse',
+        label: () => !state.editing ? '编辑' : '预览',
+        icon: () => !state.editing ? 'icon-edit' : 'icon-browse',
         handler: () => {
           if (!state.editing) { methods.clearFocus() }
           state.editing = !state.editing
@@ -422,6 +423,7 @@ export const VisualEditor = defineComponent({
                   config={props.config}
                   block={block}
                   key={index}
+                  formData={props.formData}
                   {...{
                     onMouseDown: (e: MouseEvent) => focusHandler.block.onMouseDown(e, block, index),
                     onContextMenu: (e: MouseEvent) => handler.onContextMenuBlock(e, block)
