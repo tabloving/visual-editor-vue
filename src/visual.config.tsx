@@ -1,13 +1,13 @@
 import { createVisualEditorConfig } from "./packages/visual-editor.utils";
-import { ElButton, ElInput } from 'element-plus'
-import { createEditorColorProp, createEditorInputProp, createEditorSelectProp } from "./packages/visual-editor-props";
+import { ElButton, ElInput, ElOption, ElSelect } from 'element-plus'
+import { createEditorColorProp, createEditorInputProp, createEditorSelectProp, createVisualEditorTableProp } from "./packages/visual-editor-props";
 export const VisualConfig = createVisualEditorConfig();
 
 /*----------------------文本----------------------*/
 VisualConfig.registry('text', {
   label: '文本',
   preview: () => '预览文本',
-  render: ({props}) => <span style={{color:props.color,fontSize:props.size}}>{props.text || '默认文本'}</span>,
+  render: ({ props }) => <span style={{ color: props.color, fontSize: props.size }}>{props.text || '默认文本'}</span>,
   props: {
     text: createEditorInputProp('显示文本'),
     color: createEditorColorProp('字体颜色'),
@@ -25,7 +25,7 @@ VisualConfig.registry('text', {
 VisualConfig.registry('button', {
   label: '按钮',
   preview: () => <ElButton>预览按钮</ElButton>,
-  render: ({props}) => <ElButton type={props.type} size={props.size}>{props.text || '按钮'}</ElButton>,
+  render: ({ props }) => <ElButton type={props.type} size={props.size}>{props.text || '按钮'}</ElButton>,
   props: {
     text: createEditorInputProp('显示文本'),
     type: createEditorSelectProp('按钮类型', [
@@ -50,4 +50,21 @@ VisualConfig.registry('input', {
   label: '输入框',
   preview: () => <ElInput />,
   render: () => <ElInput />,
+})
+
+/*----------------------下拉框----------------------*/
+VisualConfig.registry('select', {
+  label: '下拉框',
+  preview: () => <ElSelect />,
+  render: ({ props }) => <ElSelect>
+    {(props.options || []).map((opt: { label: string, value: string }, index: number) => (
+      <ElOption label={opt.label} value={opt.value} key={index} />
+    ))}
+  </ElSelect>,
+  props: {
+    options: createVisualEditorTableProp('下拉选项', [
+      { label: '显示值', filed: 'label' },
+      { label: '绑定值', filed: 'value' },
+    ])
+  }
 })
