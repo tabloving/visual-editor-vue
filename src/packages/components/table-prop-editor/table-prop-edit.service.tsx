@@ -55,6 +55,9 @@ const ServiceComponent = defineComponent({
       },
       onCancel: () => {
         methods.hide()
+      },
+      onDelect: (index: number) => {
+        state.editData.splice(index, 1)
       }
     }
 
@@ -82,7 +85,13 @@ const ServiceComponent = defineComponent({
                 ))}
 
                 <ElTableColumn {...{ label: '操作栏' } as any} >
-                  <ElButton type='danger'>删除</ElButton>
+                  {{
+                    default: ({ $index }: { $index: number }) => (
+                      <ElButton type='danger' {...{ onClick: () => handler.onDelect($index) } as any}>
+                        删除
+                      </ElButton>
+                    )
+                  }}
                 </ElTableColumn>
 
 
