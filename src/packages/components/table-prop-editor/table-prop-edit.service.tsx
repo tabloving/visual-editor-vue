@@ -74,7 +74,7 @@ const ServiceComponent = defineComponent({
                 {state.option.config.table!.options.map((item, index) => (
                   <ElTableColumn {...{ label: item.label } as any} >
                     {{
-                      default: ({ row }: { row: any }) => <ElInput v-model={row[item.filed]} />
+                      default: ({ row }: { row: any }) => <ElInput v-model={row[item.field]} />
                     }}
                   </ElTableColumn>
 

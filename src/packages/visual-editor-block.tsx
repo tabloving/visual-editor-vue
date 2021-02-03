@@ -49,12 +49,12 @@ export const VisualEditorBlock = defineComponent({
       const formData = props.formData as Record<string, any>;
       const Render = component.render({
         props: props.block.props || {},
-        model: Object.entries((props.block.model || {})).reduce((prev, [propName, modelName]) => {
+        model: Object.entries(props.block.model || {}).reduce((prev, [propName, modelName]) => {
           prev[propName] = {
             [propName === 'default' ? 'modelValue' : propName]: formData[modelName],
-            [propName === 'default' ? 'update:modelValue' : 'onChange']: (val: any) => formData[modelName] = val
+            [propName === 'default' ? 'onUpdate:modelValue' : 'onChange']: (val: any) => formData[modelName] = val
           }
-          return prev
+          return prev;
         }, {} as Record<string, any>),
       })
       return (

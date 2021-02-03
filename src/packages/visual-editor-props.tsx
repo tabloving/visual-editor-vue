@@ -49,7 +49,7 @@ export function createEditorSelectProp(label: string, options: VisualEditorSelec
 export type VisualEditorTableOptions = {
   options: {
     label: string,  // 列显示文本
-    filed: string   // 列绑定的字段
+    field: string   // 列绑定的字段
   }[],
   showKey: string
 }

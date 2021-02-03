@@ -18,7 +18,6 @@
 		data() {
 			return {
 				VisualConfig,
-				flag:false,
 				dataJson,
 				formData:{
 					username:'admin'

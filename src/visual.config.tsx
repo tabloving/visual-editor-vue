@@ -42,18 +42,19 @@ VisualConfig.registry('button', {
       { label: '小型', val: 'small' },
       { label: '迷你', val: 'mini' },
     ])
-  }
+  },
+
 })
 
 /*----------------------输入框----------------------*/
 VisualConfig.registry('input', {
   label: '输入框',
   preview: () => <ElInput modelValue={""} />,
-  render: ({model}) =>{
-   return  <ElInput {...model.default} />
+  render: ({ model }) => {
+    return <ElInput {...model.default} />
   },
-  model:{
-    default:'绑定字段'
+  model: {
+    default: '绑定字段'
   }
 })
 
@@ -61,19 +62,24 @@ VisualConfig.registry('input', {
 VisualConfig.registry('select', {
   label: '下拉框',
   preview: () => <ElSelect />,
-  render: ({ props }) => <ElSelect key={(props.options || []).map((opt: any) => opt.value).join('.')}>
-    {(props.options || []).map((opt: { label: string, value: string }, index: number) => (
-      <ElOption label={opt.label} value={opt.value} key={index} />
-    ))}
-  </ElSelect>,
+  render: ({ props, model }) => (
+    <ElSelect key={(props.options || []).map((opt: any) => opt.value).join('.')} {...model.default}>
+      {(props.options || []).map((opt: { label: string, value: string }, index: number) => (
+        <ElOption label={opt.label} value={opt.value} key={index} />
+      ))}
+    </ElSelect>
+  ),
   props: {
     options: createVisualEditorTableProp('下拉选项', {
       options: [
-        { label: '显示值', filed: 'label' },
-        { label: '绑定值', filed: 'value' },
-        { label: '备注', filed: 'comments' },
+        { label: '显示值', field: 'label' },
+        { label: '绑定值', field: 'value' },
+        { label: '备注', field: 'comments' },
       ],
       showKey: 'label'
     })
+  },
+  model: {
+    default: '绑定字段'
   }
 })
