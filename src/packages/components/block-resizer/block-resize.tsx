@@ -1,4 +1,4 @@
-import { VisualEditorBlockData, VisualEditorComponent } from "@/packages/visual-editor.utils";
+import { VisualDragProvider, VisualEditorBlockData, VisualEditorComponent } from "@/packages/visual-editor.utils";
 import { defineComponent, PropType } from "vue";
 
 enum Direction {
@@ -13,7 +13,7 @@ export const BlockResize = defineComponent({
     component: { type: Object as PropType<VisualEditorComponent>, required: true },
   },
   setup(props, ctx) {
-
+    const {dragstart,dragend} = VisualDragProvider.inject()
     const onMouseDown = (() => {
       let data = {
         startX: 0,
@@ -22,6 +22,7 @@ export const BlockResize = defineComponent({
         startHeight: 0,
         startLeft: 0,
         startTop: 0,
+        dragging: false,
         direction: {
           horizontal: Direction.start,
           vertical: Direction.start,
@@ -39,12 +40,17 @@ export const BlockResize = defineComponent({
           startHeight: props.block.height,
           startLeft: props.block.left,
           startTop: props.block.top,
+          dragging: false,
           direction
         }
       }
 
       const mousemove = (e: MouseEvent) => {
-        let { startX, startY, startWidth, startHeight, direction,startLeft,startTop } = data
+        let { startX, startY, startWidth, startHeight, direction,startLeft,startTop,dragging } = data
+        if(!dragging){
+          data.dragging = true
+          dragstart.emit()
+        }
         let { clientX: moveX, clientY: moveY } = e
 
         // 拖拽左右控制点进行缩放时，只允许横向缩放
@@ -79,13 +85,14 @@ export const BlockResize = defineComponent({
       const mouseup = () => {
         document.body.removeEventListener('mousemove', mousemove)
         document.body.removeEventListener('mouseup', mouseup)
+        if(data.dragging){
+          dragend.emit()
+        }
       }
 
 
       return mousedown
     })()
-
-
 
     return () => {
       const { width, height } = props.component.resize || {};

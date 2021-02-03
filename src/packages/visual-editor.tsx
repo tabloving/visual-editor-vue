@@ -1,6 +1,6 @@
-import { computed, defineComponent, PropType, reactive, ref } from "vue";
+import { computed, defineComponent,  PropType, reactive, ref } from "vue";
 import '@/packages/visual-editor.scss'
-import { createNewBlock, VisualEditorBlockData, VisualEditorComponent, VisualEditorConfig, VisualEditorMarkLines, VisualEditorModelValue } from "./visual-editor.utils";
+import { createNewBlock, VisualDragProvider, VisualEditorBlockData, VisualEditorComponent, VisualEditorConfig, VisualEditorMarkLines, VisualEditorModelValue } from "./visual-editor.utils";
 import { useModel } from "./utils/useModel";
 import { VisualEditorBlock } from "./visual-editor-block";
 import { useVisualCommand } from "./visual-command";
@@ -9,6 +9,8 @@ import { $$dialog } from "./utils/dialog-service";
 import { ElMessageBox } from "element-plus";
 import { $$dropdown, DropdownOption } from "./utils/dropdown-service";
 import { VisualEditorOperator } from "./visual-editor-operator";
+
+
 export const VisualEditor = defineComponent({
   props: {
     modelValue: { type: Object as PropType<VisualEditorModelValue>, required: true },
@@ -63,6 +65,7 @@ export const VisualEditor = defineComponent({
     const dragstart = createEvent();
     const dragend = createEvent();
 
+    VisualDragProvider.provide({dragstart,dragend})
     // dragstart.on(() => {console.log('dragstart')});
     // dragend.on(() => {console.log('dragend')});
 
