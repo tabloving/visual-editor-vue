@@ -213,7 +213,7 @@ $primary: #3fb280;
   }
 }
 
-.visual-editor-container-edit-button{
+.visual-editor-container-edit-button {
   position: absolute;
   top: 20px;
   right: 20px;
@@ -222,10 +222,67 @@ $primary: #3fb280;
   padding: 5px 12px;
   cursor: pointer;
 
-  &:hover{
-    background-color:#f2f2f2;
+  &:hover {
+    background-color: #f2f2f2;
   }
-  .iconfont{
+  .iconfont {
     color: $iconColor;
+  }
+}
+
+.block-resize {
+  $space: 4px;
+  $size: 6px;
+  position: absolute;
+  top: -$space;
+  left: -$space;
+  bottom: -$space;
+  right: -$space;
+  width: $size;
+  height: $size;
+  background-color: $primary;
+
+  &.block-resize-top {
+    left: calc(50% - #{$size / 2});
+    right: initial;
+    bottom: initial;
+  }
+
+  &.block-resize-bottom {
+    left: calc(50% - #{$size / 2});
+    right: initial;
+    top: initial;
+  }
+
+  &.block-resize-left {
+    top: calc(50% - #{$size / 2});
+    right: initial;
+    bottom: initial;
+  }
+
+  &.block-resize-right {
+    top: calc(50% - #{$size / 2});
+    left: initial;
+    bottom: initial;
+  }
+
+  &.block-resize-top-left {
+    right: initial;
+    bottom: initial;
+  }
+
+  &.block-resize-top-right {
+    left: initial;
+    bottom: initial;
+  }
+
+  &.block-resize-bottom-left {
+    right: initial;
+    top: initial;
+  }
+
+  &.block-resize-bottom-right {
+    left: initial;
+    top: initial;
   }
 }
