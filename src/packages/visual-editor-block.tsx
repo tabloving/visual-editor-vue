@@ -1,4 +1,4 @@
-import { computed, defineComponent, onMounted, PropType, ref } from "vue";
+import { computed, defineComponent, onMounted, PropType, ref, Slot } from "vue";
 import { BlockResize } from "./components/block-resizer/block-resize";
 import { VisualEditorBlockData, VisualEditorConfig } from "./visual-editor.utils";
 
@@ -14,6 +14,10 @@ export const VisualEditorBlock = defineComponent({
     },
     formData: {
       type: Object as PropType<Record<string, any>>,
+      required: true
+    },
+    slots: {
+      type: Object as PropType<Record<string, Slot | undefined>>,
       required: true
     }
   },
@@ -48,31 +52,39 @@ export const VisualEditorBlock = defineComponent({
     return () => {
       const component = props.config.componentMap[props.block.componentKey];
       const formData = props.formData as Record<string, any>;
-      const Render = component.render({
-        size: props.block.hasResized ? {
-          width: props.block.width,
-          height: props.block.height,
-        } : {},
-        props: props.block.props || {},
-        model: Object.keys(component.model || {}).reduce((prev, propName) => {
-          const modelName = !props.block.model ? null : props.block.model[propName]
-          prev[propName] = {
-            [propName === 'default' ? 'modelValue' : propName]: !!modelName ? formData[modelName] : null,
-            [propName === 'default' ? 'onUpdate:modelValue' : 'onChange']: (val: any) => !!modelName && (formData[modelName] = val)
-          }
-          return prev;
-        }, {} as Record<string, any>),
-      })
+
+      let render: any;
+      if (!!props.block.slotName && !!props.slots[props.block.slotName]) {
+        render = props.slots[props.block.slotName]!()
+      } else {
+        render = component.render({
+          size: props.block.hasResized ? {
+            width: props.block.width,
+            height: props.block.height,
+          } : {},
+          props: props.block.props || {},
+          model: Object.keys(component.model || {}).reduce((prev, propName) => {
+            const modelName = !props.block.model ? null : props.block.model[propName]
+            prev[propName] = {
+              [propName === 'default' ? 'modelValue' : propName]: !!modelName ? formData[modelName] : null,
+              [propName === 'default' ? 'onUpdate:modelValue' : 'onChange']: (val: any) => !!modelName && (formData[modelName] = val)
+            }
+            return prev;
+          }, {} as Record<string, any>),
+        })
+      }
 
 
-      const {width, height} = component.resize || {}
+
+
+      const { width, height } = component.resize || {}
 
       return (
         <div class={classes.value} style={styles.value} ref={el}>
-          {Render}
+          {render}
 
-          {!!props.block.focus && (!!width || !!height) && 
-          <BlockResize block={props.block} component={component} />
+          {!!props.block.focus && (!!width || !!height) &&
+            <BlockResize block={props.block} component={component} />
           }
         </div>
       )

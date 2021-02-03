@@ -388,6 +388,7 @@ export const VisualEditor = defineComponent({
             block={block}
             key={index}
             formData={props.formData}
+            slots={ctx.slots}
           />
         ))
         )}
@@ -449,6 +450,7 @@ export const VisualEditor = defineComponent({
                   block={block}
                   key={index}
                   formData={props.formData}
+                  slots={ctx.slots}
                   {...{
                     onMouseDown: (e: MouseEvent) => focusHandler.block.onMouseDown(e, block, index),
                     onContextMenu: (e: MouseEvent) => handler.onContextMenuBlock(e, block)

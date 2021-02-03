@@ -2,16 +2,17 @@ import { VisualEditorProps } from "./visual-editor-props";
 
 export interface VisualEditorBlockData {
   componentKey: string,     // 映射 VisualEditorConfig中componentMap的component对象
-  top: number,              // 组件的的top定位
-  left: number,             // 组件的left定位
-  adjustPosition: boolean,  // 是否需要调整位置 居中放置
-  focus: boolean,           // 当前是否为选中组件
-  zIndex: number,           // 组件的z-index
-  width: number,            // 组件宽度
-  height: number,           // 组件高度
-  hasResized: boolean,      // 是否调整过宽度或者高度
-  props: Record<string, any>, //组件的设计属性
-  model: Record<string, string>, // 绑定的字段
+  top: number,                       // 组件的的top定位
+  left: number,                      // 组件的left定位
+  adjustPosition: boolean,           // 是否需要调整位置 居中放置
+  focus: boolean,                    // 当前是否为选中组件
+  zIndex: number,                    // 组件的z-index
+  width: number,                     // 组件宽度
+  height: number,                    // 组件高度
+  hasResized: boolean,               // 是否调整过宽度或者高度
+  props: Record<string, any>,        // 组件的设计属性
+  model: Record<string, string>,     // 绑定的字段
+  slotName?: string,                // 组件唯一标识 
 }
 
 export interface VisualEditorModelValue {
