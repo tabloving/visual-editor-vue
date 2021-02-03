@@ -1,6 +1,9 @@
 <template>
 	<div class="app">
 		<visual-editor v-model="dataJson" :config="VisualConfig" :formData='formData' />
+		<div style="text-align: center">
+			{{JSON.stringify(formData)}}
+		</div>
 	</div>
 </template>
 
