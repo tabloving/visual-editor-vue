@@ -43,6 +43,7 @@ $primary: #3fb280;
     padding: 20px 20px 0;
     box-sizing: border-box;
     background-color: white;
+    overflow-y: auto;
 
     .visual-editor-menu-item {
       position: relative;
@@ -246,6 +247,7 @@ $primary: #3fb280;
   height: $size;
   background-color: $primary;
   z-index: 99;
+  user-select: none;
 
   &.block-resize-top {
     left: calc(50% - #{$size / 2});

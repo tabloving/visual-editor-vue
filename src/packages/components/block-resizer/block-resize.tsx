@@ -22,8 +22,8 @@ export const BlockResize = defineComponent({
         startHeight: 0,
         startLeft: 0,
         startTop: 0,
-        direction: { 
-          horizontal: Direction.start, 
+        direction: {
+          horizontal: Direction.start,
           vertical: Direction.start,
         }
       }
@@ -32,29 +32,48 @@ export const BlockResize = defineComponent({
         e.stopPropagation();
         document.body.addEventListener('mousemove', mousemove)
         document.body.addEventListener('mouseup', mouseup)
-        data ={
+        data = {
           startX: e.clientX,
           startY: e.clientY,
-          startWidth:props.block.width,
-          startHeight:props.block.height,
-          startLeft:props.block.left,
-          startTop:props.block.top,
+          startWidth: props.block.width,
+          startHeight: props.block.height,
+          startLeft: props.block.left,
+          startTop: props.block.top,
           direction
         }
       }
 
       const mousemove = (e: MouseEvent) => {
-        const {startX, startY,startWidth, startHeight} = data
-        const {clientX:moveX, clientY:moveY} = e
-        const durX = moveX - startX
-        const durY = moveY - startY
+        let { startX, startY, startWidth, startHeight, direction,startLeft,startTop } = data
+        let { clientX: moveX, clientY: moveY } = e
+
+        // 拖拽左右控制点进行缩放时，只允许横向缩放
+        if (direction.horizontal === Direction.center) {
+          moveX = startX
+        }
+        // 拖拽上下控制点进行缩放时，只允许纵向缩放
+        if (direction.vertical === Direction.center) {
+          moveY = startY
+        }
+        let durX = moveX - startX
+        let durY = moveY - startY
+        const block = props.block as VisualEditorBlockData
+
+        if(direction.horizontal === Direction.start){
+          durX = -durX
+          block.left = startLeft - durX
+        }
+
+        if(direction.vertical === Direction.start){
+          durY = -durY
+          block.top = startTop - durY
+        }
+
         const width = startWidth + durX
-        const height = startHeight + durY
-        const block =props.block as VisualEditorBlockData
+        const height = startHeight + durY   
         block.width = width
         block.height = height
         block.hasResized = true
-
       }
 
       const mouseup = () => {
