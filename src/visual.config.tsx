@@ -78,9 +78,10 @@ VisualConfig.registry('input', {
 VisualConfig.registry('select', {
   label: '下拉框',
   preview: () => <ElSelect />,
-  render: ({ props, model, custom }) => (
+  render: ({ props, model, custom ,size}) => (
     <ElSelect
       key={(props.options || []).map((opt: any) => opt.value).join('.')}
+      style={{ width: !!size.width ? `${size.width}px` : null }}
       {...model.default}
       {...custom}
     >
@@ -101,7 +102,8 @@ VisualConfig.registry('select', {
   },
   model: {
     default: '绑定字段'
-  }
+  },
+  resize: { width: true },
 })
 
 /*----------------------数字范围----------------------*/

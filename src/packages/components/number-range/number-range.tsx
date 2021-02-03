@@ -4,12 +4,12 @@ import './number-range.scss';
 
 export const NumberRange = defineComponent({
   props: {
-    start: { type: String },
-    end: { type: String }
+    start: { type: Number },
+    end: { type: Number }
   },
   emits: {
-    'update:start': (val?: string) => true,
-    'update:end': (val?: string) => true,
+    'update:start': (val?: number) => true,
+    'update:end': (val?: number) => true,
   },
   setup(props, ctx) {
     const startModel = useModel(() => props.start, val => ctx.emit('update:start', val))

@@ -190,6 +190,19 @@ export function useVisualCommand({
     }
   })
 
+  commander.registry({
+    name:'selectAll',
+    followQueue: false,
+    keyboard:'ctrl+a',
+    execute: ()=>{
+      return {
+        redo:() => {
+          (dataModel.value.blocks || []).forEach(block=>block.focus = true)
+        }
+      }
+    }
+  })
+
   commander.init()
 
   return {
