@@ -13,7 +13,8 @@ export const VisualEditor = defineComponent({
   props: {
     modelValue: { type: Object as PropType<VisualEditorModelValue>, required: true },
     config: { type: Object as PropType<VisualEditorConfig>, required: true },
-    formData: { type: Object as PropType<Record<string, any>>, required: true }
+    formData: { type: Object as PropType<Record<string, any>>, required: true },
+    customProps: { type: Object as PropType<Record<string, any>> },
   },
   emits: {
     'update:modelValue': (val?: VisualEditorModelValue) => true
@@ -94,7 +95,7 @@ export const VisualEditor = defineComponent({
           ElMessageBox.alert('解析Json字符串出错')
         }
       },
-      openEdit:() => state.editing = true,
+      openEdit: () => state.editing = true,
     };
 
     /* 处理从菜单拖拽组件到容器的相关动作 */
@@ -389,6 +390,7 @@ export const VisualEditor = defineComponent({
             key={index}
             formData={props.formData}
             slots={ctx.slots}
+            customProps={props.customProps}
           />
         ))
         )}
@@ -451,6 +453,7 @@ export const VisualEditor = defineComponent({
                   key={index}
                   formData={props.formData}
                   slots={ctx.slots}
+                  customProps={props.customProps}
                   {...{
                     onMouseDown: (e: MouseEvent) => focusHandler.block.onMouseDown(e, block, index),
                     onContextMenu: (e: MouseEvent) => handler.onContextMenuBlock(e, block)

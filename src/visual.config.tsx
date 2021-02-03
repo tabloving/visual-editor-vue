@@ -26,8 +26,12 @@ VisualConfig.registry('text', {
 VisualConfig.registry('button', {
   label: '按钮',
   preview: () => <ElButton>预览按钮</ElButton>,
-  render: ({ props, size }) => (
-    <ElButton type={props.type} size={props.size} style={{
+  render: ({ props, size,custom }) => (
+    <ElButton 
+    {...custom}
+    type={props.type} 
+    size={props.size} 
+    style={{
       width: `${size.width}px`,
       height: `${size.height}px`,
     }}>
@@ -58,8 +62,11 @@ VisualConfig.registry('button', {
 VisualConfig.registry('input', {
   label: '输入框',
   preview: () => <ElInput modelValue={""} />,
-  render: ({ model, size }) => {
-    return <ElInput {...model.default} style={{ width: `${size.width}px` }} />
+  render: ({ model, size,custom }) => {
+    return <ElInput 
+    {...custom}
+    {...model.default} 
+    style={{ width: `${size.width}px` }} />
   },
   resize: { width: true },
   model: {
@@ -71,8 +78,12 @@ VisualConfig.registry('input', {
 VisualConfig.registry('select', {
   label: '下拉框',
   preview: () => <ElSelect />,
-  render: ({ props, model }) => (
-    <ElSelect key={(props.options || []).map((opt: any) => opt.value).join('.')} {...model.default}>
+  render: ({ props, model,custom }) => (
+    <ElSelect 
+    key={(props.options || []).map((opt: any) => opt.value).join('.')} 
+    {...model.default}
+    {...custom}
+    >
       {(props.options || []).map((opt: { label: string, value: string }, index: number) => (
         <ElOption label={opt.label} value={opt.value} key={index} />
       ))}
