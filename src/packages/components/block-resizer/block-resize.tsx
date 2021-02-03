@@ -10,7 +10,7 @@ export const BlockResize = defineComponent({
     return () =>{
       const {width, height} = props.component.resize || {};
 
-      return () => <>
+      return <>
         {!!height && <>
           <div class="block-resize block-resize-top" />
           <div class="block-resize block-resize-bottom"/>
