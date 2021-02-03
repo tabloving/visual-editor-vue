@@ -1,0 +1,16 @@
+.number-range{
+  display: inline-flex;
+  align-items: stretch;
+  height: 36px;
+  input{
+    flex: 1;
+    width: 120px;
+  }
+
+  span{
+    margin: 0 8px;
+    display:flex;
+    align-items: center;
+  }
+}
+

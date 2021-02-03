@@ -4,6 +4,7 @@
 		<div style="text-align: center">
 			{{JSON.stringify(formData)}}
 		</div>
+		<NumberRange v-model:start='formData.minLevel' v-model:end='formData.maxLevel'/>
 	</div>
 </template>
 
@@ -13,6 +14,7 @@
 	import { TestUseModel } from "@/packages/utils/useModel";
 	import {VisualConfig} from '@/visual.config';
 	import dataJson from './data.json';
+	import {NumberRange} from '@/packages/components/number-range/number-range'
 	export default defineComponent({
 		name: "App",
 		data() {
@@ -25,7 +27,8 @@
 			};
 		},
 		components: {
-			VisualEditor
+			VisualEditor,
+			NumberRange
 		},
 	});
 </script>
@@ -35,5 +38,10 @@
 	body {
 		margin: 0;
 		padding: 0;
+	}
+	.visual-editor-menu-item{
+		input{
+			width: 80px;
+		}
 	}
 </style>
