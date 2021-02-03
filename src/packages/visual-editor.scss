@@ -200,7 +200,7 @@ $primary: #3fb280;
     }
   }
 
-  &.visual-editor-editing {
+  &.visual-editor-not-preview {
     & > .visual-editor-body {
       .visual-editor-container{
         border: 1px dashed $primary;
