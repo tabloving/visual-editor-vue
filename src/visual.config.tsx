@@ -26,15 +26,15 @@ VisualConfig.registry('text', {
 VisualConfig.registry('button', {
   label: '按钮',
   preview: () => <ElButton>预览按钮</ElButton>,
-  render: ({ props, size,custom }) => (
-    <ElButton 
-    {...custom}
-    type={props.type} 
-    size={props.size} 
-    style={{
-      width: `${size.width}px`,
-      height: `${size.height}px`,
-    }}>
+  render: ({ props, size, custom }) => (
+    <ElButton
+      {...custom}
+      type={props.type}
+      size={props.size}
+      style={{
+        width: `${size.width}px`,
+        height: `${size.height}px`,
+      }}>
       {props.text || '按钮'}
     </ElButton>
   ),
@@ -62,11 +62,11 @@ VisualConfig.registry('button', {
 VisualConfig.registry('input', {
   label: '输入框',
   preview: () => <ElInput modelValue={""} />,
-  render: ({ model, size,custom }) => {
-    return <ElInput 
-    {...custom}
-    {...model.default} 
-    style={{ width: `${size.width}px` }} />
+  render: ({ model, size, custom }) => {
+    return <ElInput
+      {...custom}
+      {...model.default}
+      style={{ width: `${size.width}px` }} />
   },
   resize: { width: true },
   model: {
@@ -78,11 +78,11 @@ VisualConfig.registry('input', {
 VisualConfig.registry('select', {
   label: '下拉框',
   preview: () => <ElSelect />,
-  render: ({ props, model,custom }) => (
-    <ElSelect 
-    key={(props.options || []).map((opt: any) => opt.value).join('.')} 
-    {...model.default}
-    {...custom}
+  render: ({ props, model, custom }) => (
+    <ElSelect
+      key={(props.options || []).map((opt: any) => opt.value).join('.')}
+      {...model.default}
+      {...custom}
     >
       {(props.options || []).map((opt: { label: string, value: string }, index: number) => (
         <ElOption label={opt.label} value={opt.value} key={index} />
@@ -123,4 +123,30 @@ VisualConfig.registry('number-range', {
     end: '结尾绑定字段'
   },
   resize: { width: true },
+})
+
+/*----------------------图片----------------------*/
+VisualConfig.registry('image',{
+  label: '图片',
+  resize: {
+    width: true,
+    height: true,
+  },
+  preview: () => (
+    <div style='text-align: center'>
+      <div style='font-size:20px;background-color:#f2f2f2;color:ccc;display:inline-flex;width:100px;height:100px'>
+        <i class='el-icon-picture' />
+      </div>
+    </div>
+  ),
+  render: ({ props, size }) => {
+    return (
+      <div style={{ height: `${size.height || 100}px`, width: `${size.width || 100}px` }} class='visual-block-image'>
+        <img src={props.url || 'https://cn.vuejs.org/images/logo.png'} />
+      </div>
+    )
+  },
+  props: {
+    url: createEditorInputProp('地址')
+  }
 })

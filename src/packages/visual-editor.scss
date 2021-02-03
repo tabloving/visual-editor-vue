@@ -168,8 +168,9 @@ $primary: #3fb280;
         box-sizing: border-box;
 
         .visual-editor-block {
-          .el-button,.el-input {
-            transition:none;
+          .el-button,
+          .el-input {
+            transition: none;
           }
 
           &:after {
@@ -199,6 +200,15 @@ $primary: #3fb280;
     &.visual-editor-block-focus {
       &:after {
         border: 1px dashed $primary;
+      }
+    }
+
+    .visual-block-image {
+      img {
+        object-fit: fill;
+        display: block;
+        width: 100%;
+        height: 100%;
       }
     }
   }
