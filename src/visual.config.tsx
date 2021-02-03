@@ -32,8 +32,8 @@ VisualConfig.registry('button', {
       type={props.type}
       size={props.size}
       style={{
-        width: `${size.width}px`,
-        height: `${size.height}px`,
+        width: !!size.width ? `${size.width}px` : null,
+        height: !!size.height ? `${size.height}px` : null,
       }}>
       {props.text || '按钮'}
     </ElButton>
@@ -66,7 +66,7 @@ VisualConfig.registry('input', {
     return <ElInput
       {...custom}
       {...model.default}
-      style={{ width: `${size.width}px` }} />
+      style={{ width: !!size.width ? `${size.width}px` : null }} />
   },
   resize: { width: true },
   model: {
@@ -110,7 +110,7 @@ VisualConfig.registry('number-range', {
   preview: () => <NumberRange />,
   render: ({ model, size }) => (
     <NumberRange
-      style={{ width: `${size.width}px` }}
+      style={{ width: !!size.width ? `${size.width}px` : null }}
       {...{
         start: model.start.value,
         'onUpdate:start': model.start.onChange,
@@ -126,7 +126,7 @@ VisualConfig.registry('number-range', {
 })
 
 /*----------------------图片----------------------*/
-VisualConfig.registry('image',{
+VisualConfig.registry('image', {
   label: '图片',
   resize: {
     width: true,
