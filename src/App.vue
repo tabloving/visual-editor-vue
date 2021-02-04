@@ -1,6 +1,6 @@
 <template>
 	<div class="app">
-		<h1 style='text-align:center'>这是页面内容</h1>
+		<h2 style="text-align: center; color: #3fb280;margin-bottom:14px">以下为页面内容</h2>
 		<visual-editor
 			v-model="dataJson"
 			:config="VisualConfig"
@@ -15,10 +15,6 @@
 		<div style="text-align: center">
 			{{ JSON.stringify(formData) }}
 		</div>
-		<!-- <NumberRange
-			v-model:start="formData.minLevel"
-			v-model:end="formData.maxLevel"
-		/> -->
 	</div>
 </template>
 
@@ -35,24 +31,27 @@
 				VisualConfig,
 				dataJson,
 				formData: {
-					username: "admin",
-					author:'liuyang',
-					frame:'vue',
-					lang:'typescript',
-					numMin:2020,
-					numMax: 2021,
+					author: "liuyang",
+					frame: "vue",
+					lang: "typescript",
+					numMin: '2020',
+					numMax: '2021',
 				},
-				customProps:{
+				customProps: {
+					// langSelector:{
+					// 	onChange:()=>{
 
-					frame:{
-						onChange:(val)=>{
-								this.$notify({
-								message: `当前选择 ${val}`
+					// 	}
+					// },
+
+					frameSelector: {
+						onChange: (val) => {
+							this.$notify({
+								message: `当前选择 ${val}`,
 							});
-								this.formData.dynamicBtn = val
-						}
-					}
-				}
+						},
+					},
+				},
 			};
 		},
 		components: {
@@ -69,10 +68,10 @@
 		padding: 0;
 	}
 	.visual-editor-menu-item {
-		.number-range{
+		.number-range {
 			input {
-			width: 80px;
-		}
+				width: 80px;
+			}
 		}
 	}
 </style>

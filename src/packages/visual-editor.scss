@@ -43,8 +43,8 @@ $primary: #3fb280;
     }
 
     &::-webkit-scrollbar-thumb {
-      border-radius:  1em;
-      background-color: rgba(black,0.15);
+      border-radius: 1em;
+      background-color: rgba(black, 0.15);
     }
 
     &::-webkit-scrollbar-track {
@@ -60,10 +60,22 @@ $primary: #3fb280;
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 20px 20px 0;
+    padding: 60px 20px 20px;
     box-sizing: border-box;
     background-color: white;
     overflow-y: auto;
+
+    .visual-editor-menu-title {
+      text-align: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      color: white;
+      height: 36px;
+      line-height: 36px;
+      background-color: $primary;
+    }
 
     .visual-editor-menu-item {
       position: relative;
@@ -160,11 +172,24 @@ $primary: #3fb280;
     bottom: 0;
     width: $operatorSize;
     background-color: white;
-    padding: 20px 20px 80px;
+    padding: 60px 20px 20px;
     box-sizing: border-box;
+    overflow-y: auto;
 
-    .el-input-number{
-      width:100%
+    .visual-editor-operator-title{
+      text-align: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      color: white;
+      height: 36px;
+      line-height: 36px;
+      background-color: $primary;
+    }
+
+    .el-input-number {
+      width: 100%;
     }
   }
 

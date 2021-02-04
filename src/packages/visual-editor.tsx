@@ -406,6 +406,7 @@ export const VisualEditor = defineComponent({
 
       <div class={classes.value} v-show={state.editing}>
         <div class="visual-editor-menu">
+          <div class="visual-editor-menu-title">组件预览</div>
           {props.config.componentList.map(component => (
             <div class="visual-editor-menu-item"
               draggable

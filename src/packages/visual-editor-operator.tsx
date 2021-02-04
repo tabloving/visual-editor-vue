@@ -84,6 +84,8 @@ export const VisualEditorOperator = defineComponent({
 
       let content: JSX.Element[] = [];
 
+      content.push(<div class='visual-editor-operator-title'>属性编辑</div>)
+
       if (!props.block) {
         content.push(<>
           <ElFormItem label='容器宽度'>

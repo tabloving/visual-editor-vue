@@ -8,7 +8,7 @@ export const VisualConfig = createVisualEditorConfig();
 VisualConfig.registry('text', {
   label: '文本',
   preview: () => '预览文本',
-  render: ({ props }) => <span style={{ color: props.color, fontSize: props.size }}>{props.text || '默认文本'}</span>,
+  render: ({ props }) => <span style={{ color: props.color, fontSize: props.size, fontWeight: props.weight }}>{props.text || '默认文本'}</span>,
   props: {
     text: createEditorInputProp('显示文本'),
     color: createEditorColorProp('字体颜色'),
@@ -16,8 +16,12 @@ VisualConfig.registry('text', {
       { label: '14px', val: '14px' },
       { label: '18px', val: '18px' },
       { label: '24px', val: '24px' },
-    ])
-
+    ]),
+    weight: createEditorSelectProp('字体粗细', [
+      { label: '默认', val: 'normal' },
+      { label: '粗体', val: 'bold' },
+      { label: '瘦体', val: 'lighter' },
+    ]),
 
   }
 })
@@ -61,27 +65,32 @@ VisualConfig.registry('button', {
 /*----------------------输入框----------------------*/
 VisualConfig.registry('input', {
   label: '输入框',
-  preview: () => <ElInput modelValue={""} />,
-  render: ({ model, size, custom }) => {
+  preview: () => <ElInput modelValue={""} placeholder='请输入...' />,
+  render: ({ props, model, size, custom }) => {
     return <ElInput
       {...custom}
       {...model.default}
+      placeholder={props.placeholder || '请输入'}
       style={{ width: !!size.width ? `${size.width}px` : null }} />
   },
   resize: { width: true },
   model: {
-    default: '绑定字段'
+    default: '绑定字段',
+  },
+  props: {
+    placeholder: createEditorInputProp('placeholder')
   }
 })
 
 /*----------------------下拉框----------------------*/
 VisualConfig.registry('select', {
   label: '下拉框',
-  preview: () => <ElSelect />,
-  render: ({ props, model, custom ,size}) => (
+  preview: () => <ElSelect modelValue={""} placeholder='请选择' />,
+  render: ({ props, model, custom, size }) => (
     <ElSelect
       key={(props.options || []).map((opt: any) => opt.value).join('.')}
       style={{ width: !!size.width ? `${size.width}px` : null }}
+      placeholder='请选择'
       {...model.default}
       {...custom}
     >
@@ -109,16 +118,16 @@ VisualConfig.registry('select', {
 /*----------------------数字范围----------------------*/
 VisualConfig.registry('number-range', {
   label: '数字范围输入框',
-  preview: () => <NumberRange />,
-  render: ({ model, size }) => (
+  preview: () => <NumberRange {...{ start: '10', end: '20' }} />,
+  render: ({ model, size,}) => (
     <NumberRange
       style={{ width: !!size.width ? `${size.width}px` : null }}
       {...{
         start: model.start.value,
         'onUpdate:start': model.start.onChange,
         end: model.end.value,
-        'onUpdate:end': model.end.onChange,
-      }} />
+        'onUpdate:end': model.end.onChange
+      }}/>
   ),
   model: {
     start: '起始绑定字段',
