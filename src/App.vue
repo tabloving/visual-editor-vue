@@ -1,6 +1,8 @@
 <template>
 	<div class="app">
-		<h2 style="text-align: center; color: #3fb280;margin-bottom:14px">以下为页面内容</h2>
+		<h2 style="text-align: center; color: #3fb280; margin-bottom: 14px">
+			以下为页面内容
+		</h2>
 		<visual-editor
 			v-model="dataJson"
 			:config="VisualConfig"
@@ -12,6 +14,9 @@
 				<el-tag v-else>自定义标签</el-tag>
 			</template> -->
 		</visual-editor>
+
+		<!-- <NumberRange v-model:start="formData.min" v-model:end="formData.max" /> -->
+
 		<div style="text-align: center">
 			{{ JSON.stringify(formData) }}
 		</div>
@@ -23,6 +28,7 @@
 	import { VisualEditor } from "@/packages/visual-editor";
 	import { VisualConfig } from "@/visual.config";
 	import dataJson from "./data.json";
+	import { NumberRange } from "./packages/components/number-range/number-range";
 
 	export default defineComponent({
 		name: "App",
@@ -34,8 +40,8 @@
 					author: "liuyang",
 					frame: "vue",
 					lang: "typescript",
-					numMin: '2020',
-					numMax: '2021',
+					min: 2020,
+					max: 2021,
 				},
 				customProps: {
 					// langSelector:{

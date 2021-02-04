@@ -5,12 +5,12 @@ import './number-range.scss';
 
 export const NumberRange = defineComponent({
   props: {
-    start: { type: String },
-    end: { type: String },
+    start: { type: Number },
+    end: { type: Number },
   },
   emits: {
-    'update:start': (val?: string) => true,
-    'update:end': (val?: string) => true,
+    'update:start': (val?: number) => true,
+    'update:end': (val?: number) => true,
   },
   setup(props, ctx) {
     const startModel = useModel(() => props.start, val => ctx.emit('update:start', val))
@@ -18,9 +18,9 @@ export const NumberRange = defineComponent({
 
     return () => (
       <div class='number-range'>
-        <ElInput type='text' v-model={startModel.value} />
+        <ElInput type='number' v-model={startModel.value} />
         <span>~</span>
-        <ElInput type='text' v-model={endModel.value} />
+        <ElInput type='number' v-model={endModel.value} />
       </div>
     )
   }

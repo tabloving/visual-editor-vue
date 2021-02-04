@@ -118,17 +118,19 @@ VisualConfig.registry('select', {
 /*----------------------数字范围----------------------*/
 VisualConfig.registry('number-range', {
   label: '数字范围输入框',
-  preview: () => <NumberRange {...{ start: '10', end: '20' }} />,
-  render: ({ model, size,}) => (
-    <NumberRange
+  preview: () => <NumberRange {...{ start: 10, end: 20 }} />,
+  render: ({ model, size, custom }) => {
+    // console.log(model.start.start)
+   return  <NumberRange
       style={{ width: !!size.width ? `${size.width}px` : null }}
+      {...custom}
       {...{
-        start: model.start.value,
+        start: model.start.start,
         'onUpdate:start': model.start.onChange,
-        end: model.end.value,
+        end: model.end.end,
         'onUpdate:end': model.end.onChange
-      }}/>
-  ),
+      }} />
+    },
   model: {
     start: '起始绑定字段',
     end: '结尾绑定字段'
