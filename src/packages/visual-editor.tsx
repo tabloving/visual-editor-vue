@@ -385,7 +385,7 @@ export const VisualEditor = defineComponent({
     ]
 
     return () => <>
-      <div class="visual-editor-container" style={containerStyles.value}>
+      <div class="visual-editor-container" style={containerStyles.value} v-show={!state.editing}>
         {!!dataModel.value.blocks && (dataModel.value.blocks.map((block, index) => (
           <VisualEditorBlock
             config={props.config}
